@@ -8,6 +8,11 @@
 import Config
 
 config :vachan,
+  ash_apis: [
+    Vachan.Accounts
+  ]
+
+config :vachan,
   ecto_repos: [Vachan.Repo],
   generators: [timestamp_type: :utc_datetime]
 

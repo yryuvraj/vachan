@@ -51,13 +51,18 @@ defmodule Vachan.MixProject do
        compile: false,
        depth: 1},
       {:swoosh, "~> 1.5"},
-      {:finch, "~> 0.13"},
+      {:finch, "~> 0.16"},
       {:telemetry_metrics, "~> 0.6"},
       {:telemetry_poller, "~> 1.0"},
       {:gettext, "~> 0.20"},
       {:jason, "~> 1.2"},
       {:dns_cluster, "~> 0.1.1"},
-      {:bandit, "~> 1.2"}
+      {:bandit, "~> 1.2"},
+      {:ash_phoenix, "~> 1.3"},
+      {:ash, "~> 2.18"},
+      {:ash_postgres, "~> 1.4"},
+      {:ash_authentication, "~> 3.12"},
+      {:ash_authentication_phoenix, "~> 1.9"}
     ]
   end
 

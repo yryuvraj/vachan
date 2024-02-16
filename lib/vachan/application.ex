@@ -17,7 +17,8 @@ defmodule Vachan.Application do
       # Start a worker by calling: Vachan.Worker.start_link(arg)
       # {Vachan.Worker, arg},
       # Start to serve requests, typically the last entry
-      VachanWeb.Endpoint
+      VachanWeb.Endpoint,
+      {AshAuthentication.Supervisor, otp_app: :example}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

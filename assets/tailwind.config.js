@@ -9,7 +9,8 @@ module.exports = {
   content: [
     "./js/**/*.js",
     "../lib/vachan_web.ex",
-    "../lib/vachan_web/**/*.*ex"
+    "../lib/vachan_web/**/*.*ex",
+        "../deps/ash_authentication_phoenix/**/*.*ex",
   ],
   theme: {
     extend: {
