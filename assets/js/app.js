@@ -22,12 +22,20 @@ import { Socket } from "phoenix";
 import { LiveSocket } from "phoenix_live_view";
 import topbar from "../vendor/topbar";
 import GrapesJS from "grapesjs";
+import grapesJSMJML from 'grapesjs-mjml';
+import grapesjsClick, { getMouseListener, showGrabbedInfo, hideGrabbedInfo } from 'grapesjs-click'
 
 // Initialize GrapesJS when the document is loaded
 document.addEventListener("DOMContentLoaded", () => {
   const editor = GrapesJS.init({
     container: "#grapesjs", // Replace this with the ID of your GrapesJS element
     // Specify other GrapesJS options here
+    fromElement: true,
+    plugins: [grapesJSMJML, grapesjsClick ],
+    pluginOpts:{
+      [grapesJSMJML]: {}
+    },
+    
   });
 });
 
