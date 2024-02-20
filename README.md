@@ -1,4 +1,5 @@
 # Vachan
+[![Build status](https://github.com/essentiasoftserv/vachan/actions/workflows/main.yml/badge.svg)](https://github.com/essentiasoftserv/vachan/actions/workflows/main.yml)
 
 To start your Phoenix server:
 
