@@ -9,18 +9,18 @@
         "name": "crm_people_lists_person_id_fkey",
         "table": "people",
         "schema": "public",
-        "destination_attribute": "id",
-        "primary_key?": true,
         "multitenancy": {
           "global": null,
           "attribute": null,
           "strategy": null
         },
+        "primary_key?": true,
         "on_delete": null,
-        "on_update": null,
+        "destination_attribute": "id",
         "deferrable": false,
-        "match_with": null,
         "match_type": null,
+        "match_with": null,
+        "on_update": null,
         "destination_attribute_default": null,
         "destination_attribute_generated": null
       },
@@ -31,24 +31,24 @@
     {
       "default": "nil",
       "size": null,
-      "type": "uuid",
+      "type": "bigint",
       "source": "list_id",
       "references": {
         "name": "crm_people_lists_list_id_fkey",
         "table": "crm_lists",
         "schema": "public",
-        "destination_attribute": "id",
-        "primary_key?": true,
         "multitenancy": {
           "global": null,
           "attribute": null,
           "strategy": null
         },
+        "primary_key?": true,
         "on_delete": null,
-        "on_update": null,
+        "destination_attribute": "id",
         "deferrable": false,
-        "match_with": null,
         "match_type": null,
+        "match_with": null,
+        "on_update": null,
         "destination_attribute_default": null,
         "destination_attribute_generated": null
       },
@@ -58,7 +58,7 @@
     }
   ],
   "table": "crm_people_lists",
-  "hash": "60FCC9227B330AFCFF6425D3831451242C2ED5D2767310C21D8E92A6B9C20CF5",
+  "hash": "0728BFD0C65EC2D8975D8AC8D1C0018058B0C03284552F5D8544D5CEBC26AB75",
   "repo": "Elixir.Vachan.Repo",
   "identities": [],
   "schema": null,

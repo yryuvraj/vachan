@@ -1,4 +1,4 @@
-defmodule Vachan.Repo.Migrations.CrmAndMail do
+defmodule Vachan.Repo.Migrations.MigrateResources1 do
   @moduledoc """
   Updates resources based on their most recent snapshots.
 
@@ -14,7 +14,7 @@ defmodule Vachan.Repo.Migrations.CrmAndMail do
       add :subject, :text, null: false
       add :text_body, :text, null: false
       add :html_body, :text, null: false
-      add :campaign_id, :uuid
+      add :campaign_id, :bigint
     end
 
     create table(:people, primary_key: false) do
@@ -38,7 +38,7 @@ defmodule Vachan.Repo.Migrations.CrmAndMail do
       add :subject, :text, null: false
       add :body, :text, null: false
       add :status, :text, null: false
-      add :campaign_id, :uuid
+      add :campaign_id, :bigint
       add :receipient_id, :uuid
     end
 
@@ -67,7 +67,7 @@ defmodule Vachan.Repo.Migrations.CrmAndMail do
           primary_key: true,
           null: false
 
-      add :list_id, :uuid, null: false, primary_key: true
+      add :list_id, :bigint, null: false, primary_key: true
     end
 
     create table(:crm_lists, primary_key: false) do
@@ -79,7 +79,7 @@ defmodule Vachan.Repo.Migrations.CrmAndMail do
              references(:crm_lists,
                column: :id,
                name: "crm_people_lists_list_id_fkey",
-               type: :bigserial,
+               type: :bigint,
                prefix: "public"
              )
     end
@@ -97,7 +97,7 @@ defmodule Vachan.Repo.Migrations.CrmAndMail do
              references(:campaigns,
                column: :id,
                name: "templates_campaign_id_fkey",
-               type: :uuid,
+               type: :bigint,
                prefix: "public"
              )
     end
@@ -107,7 +107,7 @@ defmodule Vachan.Repo.Migrations.CrmAndMail do
              references(:campaigns,
                column: :id,
                name: "messages_campaign_id_fkey",
-               type: :uuid,
+               type: :bigint,
                prefix: "public"
              )
 
@@ -127,7 +127,7 @@ defmodule Vachan.Repo.Migrations.CrmAndMail do
           references(:crm_lists,
             column: :id,
             name: "campaigns_list_id_fkey",
-            type: :uuid,
+            type: :bigint,
             prefix: "public"
           )
     end
@@ -147,13 +147,13 @@ defmodule Vachan.Repo.Migrations.CrmAndMail do
 
     alter table(:messages) do
       modify :receipient_id, :uuid
-      modify :campaign_id, :uuid
+      modify :campaign_id, :bigint
     end
 
     drop constraint(:templates, "templates_campaign_id_fkey")
 
     alter table(:templates) do
-      modify :campaign_id, :uuid
+      modify :campaign_id, :bigint
     end
 
     drop table(:campaigns)
@@ -165,7 +165,7 @@ defmodule Vachan.Repo.Migrations.CrmAndMail do
     drop constraint(:crm_people_lists, "crm_people_lists_list_id_fkey")
 
     alter table(:crm_people_lists) do
-      modify :list_id, :uuid
+      modify :list_id, :bigint
     end
 
     drop table(:crm_lists)

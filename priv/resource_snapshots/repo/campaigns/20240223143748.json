@@ -23,54 +23,24 @@
     {
       "default": "nil",
       "size": null,
-      "type": "text",
-      "source": "subject",
-      "references": null,
-      "allow_nil?": false,
-      "generated?": false,
-      "primary_key?": false
-    },
-    {
-      "default": "nil",
-      "size": null,
-      "type": "text",
-      "source": "text_body",
-      "references": null,
-      "allow_nil?": false,
-      "generated?": false,
-      "primary_key?": false
-    },
-    {
-      "default": "nil",
-      "size": null,
-      "type": "text",
-      "source": "html_body",
-      "references": null,
-      "allow_nil?": false,
-      "generated?": false,
-      "primary_key?": false
-    },
-    {
-      "default": "nil",
-      "size": null,
-      "type": "uuid",
-      "source": "campaign_id",
+      "type": "bigint",
+      "source": "list_id",
       "references": {
-        "name": "templates_campaign_id_fkey",
-        "table": "campaigns",
+        "name": "campaigns_list_id_fkey",
+        "table": "crm_lists",
         "schema": "public",
-        "destination_attribute": "id",
-        "primary_key?": true,
         "multitenancy": {
           "global": null,
           "attribute": null,
           "strategy": null
         },
+        "primary_key?": true,
         "on_delete": null,
-        "on_update": null,
+        "destination_attribute": "id",
         "deferrable": false,
-        "match_with": null,
         "match_type": null,
+        "match_with": null,
+        "on_update": null,
         "destination_attribute_default": null,
         "destination_attribute_generated": null
       },
@@ -79,8 +49,8 @@
       "primary_key?": false
     }
   ],
-  "table": "templates",
-  "hash": "E148ABC1DC40CF77551A79EA2442A5D71BA1D864FA496A178B054D3161CC4CB7",
+  "table": "campaigns",
+  "hash": "C323D5B5DA21EECB622D5DD1A42A78FF990ABC1674680410ABD06258B2340003",
   "repo": "Elixir.Vachan.Repo",
   "identities": [],
   "schema": null,

@@ -43,24 +43,24 @@
     {
       "default": "nil",
       "size": null,
-      "type": "uuid",
+      "type": "bigint",
       "source": "campaign_id",
       "references": {
         "name": "messages_campaign_id_fkey",
         "table": "campaigns",
         "schema": "public",
-        "destination_attribute": "id",
-        "primary_key?": true,
         "multitenancy": {
           "global": null,
           "attribute": null,
           "strategy": null
         },
+        "primary_key?": true,
         "on_delete": null,
-        "on_update": null,
+        "destination_attribute": "id",
         "deferrable": false,
-        "match_with": null,
         "match_type": null,
+        "match_with": null,
+        "on_update": null,
         "destination_attribute_default": null,
         "destination_attribute_generated": null
       },
@@ -77,18 +77,18 @@
         "name": "messages_receipient_id_fkey",
         "table": "people",
         "schema": "public",
-        "destination_attribute": "id",
-        "primary_key?": true,
         "multitenancy": {
           "global": null,
           "attribute": null,
           "strategy": null
         },
+        "primary_key?": true,
         "on_delete": null,
-        "on_update": null,
+        "destination_attribute": "id",
         "deferrable": false,
-        "match_with": null,
         "match_type": null,
+        "match_with": null,
+        "on_update": null,
         "destination_attribute_default": null,
         "destination_attribute_generated": null
       },
@@ -98,7 +98,7 @@
     }
   ],
   "table": "messages",
-  "hash": "35E178286EFC70CD7ED8B4354DDF1A18B836C8524F1FF6A8D575D235D115F072",
+  "hash": "57E4D3D16B4B6B1BB8333FF92EBB649F0A52AE9D965457F62EE54181CCDD1985",
   "repo": "Elixir.Vachan.Repo",
   "identities": [],
   "schema": null,

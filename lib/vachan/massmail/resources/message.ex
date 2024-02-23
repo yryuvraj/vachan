@@ -38,7 +38,7 @@ defmodule Vachan.Massmail.Message do
   end
 
   relationships do
-    belongs_to :campaign, Vachan.Massmail.Campaign
+    belongs_to :campaign, Vachan.Massmail.Campaign, attribute_type: :integer
 
     belongs_to :receipient, Vachan.Crm.Person do
       api Vachan.Crm

@@ -40,6 +40,6 @@ defmodule Vachan.Massmail.Template do
   end
 
   relationships do
-    belongs_to :campaign, Vachan.Massmail.Campaign
+    belongs_to :campaign, Vachan.Massmail.Campaign, attribute_type: :integer
   end
 end

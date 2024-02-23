@@ -112,7 +112,7 @@
     }
   ],
   "table": "people",
-  "hash": "5A54B257EAF3EB49F86584CA027D9C7F8850692637DADE4AEB212D2C58A031FA",
+  "hash": "4F8EEDB84BBE169239E56D8425F88AAEAB6EC1D894B95846D0F42D53D69A0BED",
   "repo": "Elixir.Vachan.Repo",
   "identities": [
     {
@@ -121,8 +121,8 @@
         "email"
       ],
       "all_tenants?": false,
-      "base_filter": null,
-      "index_name": "people_unique_email_index"
+      "index_name": "people_unique_email_index",
+      "base_filter": null
     }
   ],
   "schema": null,
