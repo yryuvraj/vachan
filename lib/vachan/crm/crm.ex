@@ -3,6 +3,7 @@ defmodule Vachan.Crm do
 
   resources do
     resource Vachan.Crm.Person
+    resource Vachan.Crm.List
+    resource Vachan.Crm.PersonList
   end
-
 end

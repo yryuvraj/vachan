@@ -1,12 +1,12 @@
-defmodule Vachan.Massmail.Message do
+defmodule Vachan.Massmail.Template do
   use Ash.Resource, data_layer: AshPostgres.DataLayer
 
   resource do
-    description "Message tracks the journey of an email through the system."
+    description "Templates are used to create messages for mass emails."
   end
 
   postgres do
-    table "messages"
+    table "templates"
     repo Vachan.Repo
   end
 
@@ -24,24 +24,22 @@ defmodule Vachan.Massmail.Message do
     defaults [:create, :read, :update, :destroy]
 
     read :by_id do
-      argument :id, :uuid, allow_nil?: false
+      argument :id, :integer, allow_nil?: false
       get? true
       filter expr(id == ^arg(:id))
     end
   end
 
   attributes do
-    uuid_primary_key :id
+    integer_primary_key :id
+
+    attribute :name, :string, allow_nil?: false
     attribute :subject, :string, allow_nil?: false
-    attribute :body, :string, allow_nil?: false
-    attribute :status, :string, allow_nil?: false
+    attribute :text_body, :string, allow_nil?: false
+    attribute :html_body, :string, allow_nil?: false
   end
 
   relationships do
     belongs_to :campaign, Vachan.Massmail.Campaign
-
-    belongs_to :receipient, Vachan.Crm.Person do
-      api Vachan.Crm
-    end
   end
 end

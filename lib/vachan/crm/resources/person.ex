@@ -3,7 +3,7 @@ defmodule Vachan.Crm.Person do
     data_layer: AshPostgres.DataLayer
 
   resource do
-   description "A person is a contact in the CRM system."
+    description "A person is a contact in the CRM system."
   end
 
   postgres do
@@ -31,19 +31,16 @@ defmodule Vachan.Crm.Person do
     end
   end
 
-
-
   attributes do
     uuid_primary_key :id
 
     attribute :first_name, :string, allow_nil?: false
     attribute :last_name, :string, allow_nil?: false
+
     attribute :email, :ci_string do
       allow_nil? false
 
-      constraints [
-        match: ~r/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-      ]
+      constraints match: ~r/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
     end
 
     attribute :phone, :string do
@@ -70,13 +67,15 @@ defmodule Vachan.Crm.Person do
       allow_nil? true
     end
 
-    #TODO: make this a jsonb field, validated against a list of tags in a separate table.
+    # TODO: make this a jsonb field, validated against a list of tags in a separate table.
     attribute :tags, :string do
       allow_nil? true
     end
   end
 
-
+  identities do
+    identity :unique_email, [:email]
+  end
 end
 
 # people; name, email, phone, address, city, state, country, zip, created_at, updated_at

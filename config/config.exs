@@ -10,8 +10,13 @@ import Config
 config :vachan,
   ash_apis: [
     Vachan.Accounts,
-    Vachan.Crm
+    Vachan.Crm,
+    Vachan.Massmail
   ]
+
+config :ash, :compatible_foreign_key_types, [
+  {Ash.Type.UUID, Ash.Type.Integer}
+]
 
 config :vachan,
   ecto_repos: [Vachan.Repo],

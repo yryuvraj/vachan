@@ -1,17 +1,17 @@
-defmodule Vachan.Massmail.Message do
+defmodule Vachan.Crm.List do
   use Ash.Resource, data_layer: AshPostgres.DataLayer
 
   resource do
-    description "Message tracks the journey of an email through the system."
+    description "Allow segmenting of people to target for specific campaigns."
   end
 
   postgres do
-    table "messages"
+    table "crm_lists"
     repo Vachan.Repo
   end
 
   code_interface do
-    define_for Vachan.Massmail
+    define_for Vachan.Crm
 
     define :create, action: :create
     define :update, action: :update
@@ -31,17 +31,15 @@ defmodule Vachan.Massmail.Message do
   end
 
   attributes do
-    uuid_primary_key :id
-    attribute :subject, :string, allow_nil?: false
-    attribute :body, :string, allow_nil?: false
-    attribute :status, :string, allow_nil?: false
+    integer_primary_key :id
+    attribute :name, :string, allow_nil?: false
   end
 
   relationships do
-    belongs_to :campaign, Vachan.Massmail.Campaign
-
-    belongs_to :receipient, Vachan.Crm.Person do
-      api Vachan.Crm
+    many_to_many :lists, Vachan.Crm.List do
+      through Vachan.Crm.PersonList
+      source_attribute_on_join_resource :list_id
+      destination_attribute_on_join_resource :person_id
     end
   end
 end
