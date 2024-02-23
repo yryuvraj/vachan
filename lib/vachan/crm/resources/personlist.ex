@@ -12,7 +12,7 @@ defmodule Vachan.Crm.PersonList do
 
   relationships do
     belongs_to :person, Vachan.Crm.Person, primary_key?: true, allow_nil?: false
-    belongs_to :list, Vachan.Crm.List, primary_key?: true, allow_nil?: false
+    belongs_to :list, Vachan.Crm.List, primary_key?: true, allow_nil?: false, attribute_type: :integer
   end
 
   actions do

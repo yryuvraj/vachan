@@ -79,7 +79,7 @@ defmodule Vachan.Repo.Migrations.CrmAndMail do
              references(:crm_lists,
                column: :id,
                name: "crm_people_lists_list_id_fkey",
-               type: :uuid,
+               type: :bigserial,
                prefix: "public"
              )
     end
