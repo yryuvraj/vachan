@@ -31,10 +31,17 @@ document.addEventListener("DOMContentLoaded", () => {
     container: "#grapesjs", // Replace this with the ID of your GrapesJS element
     // Specify other GrapesJS options here
     fromElement: true,
-    plugins: [grapesJSMJML, plugin],
+    plugins: [grapesJSMJML],
     pluginOpts: {
       [grapesJSMJML]: {},
     },
+    components: `
+      <mj-section>
+        <mj-column>
+          <mj-text>Hello, world!</mj-text>
+        </mj-column>
+      </mj-section>
+    `,
   });
 });
 

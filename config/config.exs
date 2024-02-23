@@ -9,7 +9,8 @@ import Config
 
 config :vachan,
   ash_apis: [
-    Vachan.Accounts
+    Vachan.Accounts,
+    Vachan.Crm
   ]
 
 config :vachan,
