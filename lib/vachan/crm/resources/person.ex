@@ -77,23 +77,3 @@ defmodule Vachan.Crm.Person do
     identity :unique_email, [:email]
   end
 end
-
-# people; name, email, phone, address, city, state, country, zip, created_at, updated_at
-# campaign: marketing campaign.
-# - template,
-# - created_by
-#
-# messages:
-# - fk: campaign
-# - fk: person
-# - from: email_address
-#
-# - message
-# - status: queued, sent, opened, clicked, replied, bounced, unsubscribed, complaint
-# - created_at, updated_at
-# eventlog
-# - fk: message
-# - event: opened, clicked, replied, bounced, unsubscribed, complaint
-#
-#
-#

@@ -42,6 +42,5 @@ defmodule Vachan.Massmail.Campaign do
     has_many :messages, Vachan.Massmail.Message
     has_many :templates, Vachan.Massmail.Template
     belongs_to :list, Vachan.Crm.List, api: Vachan.Crm, attribute_type: :integer
-
-    end
   end
+end
