@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "flowbite": "^2.3.0",
     "grapesjs": "^0.21.8",
     "grapesjs-click": "^0.0.8",
     "grapesjs-mjml": "^1.0.5",

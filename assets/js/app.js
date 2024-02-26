@@ -24,6 +24,7 @@ import topbar from "../vendor/topbar";
 import GrapesJS from "grapesjs";
 import grapesJSMJML from "grapesjs-mjml";
 import plugin from "grapesjs-preset-newsletter";
+import "flowbite/dist/flowbite.phoenix.js";
 
 // Initialize GrapesJS when the document is loaded
 document.addEventListener("DOMContentLoaded", () => {
