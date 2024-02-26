@@ -40,7 +40,7 @@ defmodule Vachan.Massmail.Message do
   relationships do
     belongs_to :campaign, Vachan.Massmail.Campaign, attribute_type: :integer
 
-    belongs_to :receipient, Vachan.Crm.Person do
+    belongs_to :recepient, Vachan.Crm.Person do
       api Vachan.Crm
     end
   end
