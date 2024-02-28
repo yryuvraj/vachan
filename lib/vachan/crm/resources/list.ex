@@ -33,6 +33,9 @@ defmodule Vachan.Crm.List do
   attributes do
     integer_primary_key :id
     attribute :name, :string, allow_nil?: false
+
+    create_timestamp :created_at
+    update_timestamp :updated_at
   end
 
   relationships do

@@ -71,6 +71,9 @@ defmodule Vachan.Crm.Person do
     attribute :tags, :string do
       allow_nil? true
     end
+
+    create_timestamp :created_at
+    update_timestamp :updated_at
   end
 
   identities do

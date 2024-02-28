@@ -37,6 +37,9 @@ defmodule Vachan.Massmail.Template do
     attribute :subject, :string, allow_nil?: false
     attribute :text_body, :string, allow_nil?: false
     attribute :html_body, :string, allow_nil?: false
+
+    create_timestamp :created_at
+    update_timestamp :updated_at
   end
 
   relationships do
