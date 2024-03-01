@@ -31,6 +31,12 @@ defmodule VachanWeb.Router do
     ash_authentication_live_session :authentication_required,
       on_mount: {VachanWeb.LiveUserAuth, :live_user_required} do
       live "/", DashLive
+      live "/people", PersonLive.Index, :index
+      live "/people/new", PersonLive.Index, :new
+      live "/people/:id/edit", PersonLive.Index, :edit
+
+      live "/people/:id", PersonLive.Show, :show
+      live "/people/:id/show/edit", PersonLive.Show, :edit
     end
   end
 
