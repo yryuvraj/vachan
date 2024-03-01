@@ -1,0 +1,30 @@
+# walkthrough
+
+## Section
+
+```elixir
+alias Vachan.Crm.Person
+```
+
+```elixir
+new_person =
+  Vachan.Crm.Person
+  |> Ash.Changeset.for_create(
+    :create,
+    %{
+      first_name: "Anuvrat",
+      last_name: "Parashar",
+      email: "anuvrat@anuvrat.in"
+    }
+  )
+  |> Vachan.Crm.create!()
+
+# new_post =
+#   MyAshPhoenixApp.Blog.Post
+#   |> Ash.Changeset.for_create(:create, %{title: "hello world"})
+#   |>  MyAshPhoenixApp.Blog.create!()
+```
+
+```elixir
+
+```
