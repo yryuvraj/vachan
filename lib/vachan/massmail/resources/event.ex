@@ -39,11 +39,7 @@ defmodule Vachan.Massmail.Event do
 
     attribute :type, :string, allow_nil?: false
 
-    attribute :created_at, :utc_datetime_usec do
-      writable? false
-      default &DateTime.utc_now/0
-      match_other_defaults? true
-      allow_nil? false
-    end
+    create_timestamp :created_at
+    update_timestamp :updated_at
   end
 end
