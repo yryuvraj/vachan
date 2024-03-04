@@ -20,10 +20,13 @@ defmodule VachanWeb.Router do
   scope "/", VachanWeb do
     pipe_through :browser
 
+    get "/demo", PageController, :home
+
     # get "/", PageController, :home
     # Leave out `register_path` and `reset_path` if you don't want to support
     # user registration and/or password resets respectively.
     sign_in_route(register_path: "/register", reset_path: "/reset")
+
     sign_out_route AuthController
     auth_routes_for Vachan.Accounts.User, to: AuthController
     reset_route []
