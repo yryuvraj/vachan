@@ -1,7 +1,6 @@
 defmodule VachanWeb.PersonLive.Index do
   use VachanWeb, :live_view
 
-  alias Vachan.Crm
   alias Vachan.Crm.Person
 
   @impl true
