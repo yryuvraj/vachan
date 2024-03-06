@@ -1,6 +1,6 @@
 @import "tailwindcss/base";
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
-@import "../node_modules/grapesjs/dist/css/grapes.min.css";
+@import "grapesjs/dist/css/grapes.min.css";
 
 /* This file is for your main application CSS */

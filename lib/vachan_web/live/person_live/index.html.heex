@@ -23,6 +23,9 @@
     </div>
     <.link patch={~p"/people/#{person}/edit"}>Edit</.link>
   </:action>
+  <:action :let={{_id, person}}>
+    <.link patch={~p"/people/#{person}/lists"}>Add to list </.link>
+  </:action>
   <:action :let={{id, person}}>
     <.link
       phx-click={JS.push("delete", value: %{id: person.id}) |> hide("##{id}")}
@@ -45,6 +48,23 @@
     title={@page_title}
     action={@live_action}
     person={@person}
+    patch={~p"/people"}
+  />
+</.modal>
+
+<.modal
+  :if={@live_action == :add_to_list}
+  id="add-to-list-modal"
+  show
+  on_cancel={JS.patch(~p"/people")}
+>
+  <.live_component
+    module={VachanWeb.PersonLive.AddToListComponent}
+    id={@person.id}
+    title="Add to List"
+    action={@live_action}
+    person={@person}
+    lists={@streams.lists}
     patch={~p"/people"}
   />
 </.modal>

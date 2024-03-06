@@ -37,6 +37,7 @@ defmodule VachanWeb.Router do
       live "/people", PersonLive.Index, :index
       live "/people/new", PersonLive.Index, :new
       live "/people/:id/edit", PersonLive.Index, :edit
+      live "/people/:id/lists", PersonLive.Index, :add_to_list
 
       live "/people/:id", PersonLive.Show, :show
       live "/people/:id/show/edit", PersonLive.Show, :edit

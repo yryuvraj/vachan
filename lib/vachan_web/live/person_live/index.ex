@@ -2,11 +2,17 @@ defmodule VachanWeb.PersonLive.Index do
   use VachanWeb, :live_view
 
   alias Vachan.Crm.Person
+  alias Vachan.Crm.List
 
   @impl true
   def mount(_params, _session, socket) do
     {:ok, people} = Person.read_all()
-    {:ok, stream(socket, :people, people)}
+    {:ok, lists} = List.read_all()
+
+    {:ok,
+     socket
+     |> stream(:people, people)
+     |> stream(:lists, lists)}
   end
 
   @impl true
@@ -17,6 +23,12 @@ defmodule VachanWeb.PersonLive.Index do
   defp apply_action(socket, :edit, %{"id" => id}) do
     socket
     |> assign(:page_title, "Edit Person")
+    |> assign(:person, Person.get_by_id!(id))
+  end
+
+  defp apply_action(socket, :add_to_list, %{"id" => id}) do
+    socket
+    |> assign(:page_title, "Add to Lists")
     |> assign(:person, Person.get_by_id!(id))
   end
 
@@ -43,5 +55,10 @@ defmodule VachanWeb.PersonLive.Index do
     {:ok, _} = Person.destroy(person)
 
     {:noreply, stream_delete(socket, :people, person)}
+  end
+
+  @impl true
+  def handle_event("add_to_list", %{"id" => id}, socket) do
+    {:noreply, socket}
   end
 end

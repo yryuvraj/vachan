@@ -27,6 +27,12 @@ vachan-*.tar
 
 # Ignore assets that are produced by build tools.
 /priv/static/assets/
+/priv/static/**/*.gz
+/priv/static/**/*.br
+/priv/static/**/robots-*.txt
+/priv/static/**/sitemap-*.xml
+/priv/static/**/favicon-*.ico
+/priv/static/**/logo-*.svg
 
 # Ignore digested assets cache.
 /priv/static/cache_manifest.json
@@ -34,4 +40,3 @@ vachan-*.tar
 # In case you use Node.js/npm, you want to ignore these.
 npm-debug.log
 /assets/node_modules/
-

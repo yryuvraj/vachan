@@ -12,6 +12,7 @@ module.exports = {
     "../lib/vachan_web/**/*.*ex",
     "../deps/ash_authentication_phoenix/**/*.*ex",
     "./node_modules/flowbite/**/*.js",
+    "./node_modules/grapesjs/**/*.css",
   ],
   theme: {
     extend: {
