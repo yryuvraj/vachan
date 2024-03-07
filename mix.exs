@@ -62,7 +62,8 @@ defmodule Vachan.MixProject do
       {:ash, "~> 2.18"},
       {:ash_postgres, "~> 1.4"},
       {:ash_authentication, "~> 3.12"},
-      {:ash_authentication_phoenix, "~> 1.9"}
+      {:ash_authentication_phoenix, "~> 1.9"},
+      {:oban, "~> 2.17"}
     ]
   end
 

@@ -18,6 +18,10 @@ config :ash, :compatible_foreign_key_types, [
   {Ash.Type.UUID, Ash.Type.Integer}
 ]
 
+config :vachan, Oban,
+  repo: Vachan.Repo,
+  queues: [default: 10]
+
 config :vachan,
   ecto_repos: [Vachan.Repo],
   generators: [timestamp_type: :utc_datetime]

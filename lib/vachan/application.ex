@@ -18,6 +18,7 @@ defmodule Vachan.Application do
       # {Vachan.Worker, arg},
       # Start to serve requests, typically the last entry
       VachanWeb.Endpoint,
+      {Oban, Application.fetch_env!(:vachan, Oban)},
       {AshAuthentication.Supervisor, otp_app: :example}
     ]
 

@@ -1,3 +1,22 @@
+defmodule VachanWeb.Common.Icons do
+  use VachanWeb, :live_component
+
+  def people(assigns) do
+    ~H"""
+    <svg
+      class="w-5 h-5 text-gray-500 dark:text-gray-400"
+      fill="currentColor"
+      version="1.1"
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="144 144 512 512"
+    >
+      <path d="m400 279.29c-13.922 0-27.27-5.5273-37.109-15.371-9.8438-9.8398-15.371-23.188-15.371-37.109 0-13.918 5.5273-27.266 15.371-37.109 9.8398-9.8398 23.188-15.371 37.109-15.371 13.918 0 27.266 5.5312 37.109 15.371 9.8398 9.8438 15.371 23.191 15.371 37.109 0 13.922-5.5312 27.27-15.371 37.109-9.8438 9.8438-23.191 15.371-37.109 15.371zm-125.95 94.465v83.969c0 7.5 4 14.43 10.496 18.18 6.4961 3.75 14.496 3.75 20.992 0 6.4922-3.75 10.496-10.68 10.496-18.18v-83.969c0.003906-5.5664 2.2148-10.902 6.1523-14.84 3.9336-3.9336 9.2734-6.1484 14.84-6.1523v251.91c0 7.5 4 14.43 10.496 18.18 6.4922 3.75 14.496 3.75 20.992 0 6.4922-3.75 10.496-10.68 10.496-18.18v-125.95h41.984v125.95c0 7.5 4 14.43 10.496 18.18 6.4922 3.75 14.496 3.75 20.992 0 6.4922-3.75 10.496-10.68 10.496-18.18v-251.91c5.5664 0.003906 10.902 2.2188 14.84 6.1523 3.9336 3.9375 6.1484 9.2734 6.1484 14.84v83.969c0 7.5 4.0039 14.43 10.496 18.18 6.4961 3.75 14.5 3.75 20.992 0 6.4961-3.75 10.496-10.68 10.496-18.18v-83.969c-0.015625-16.695-6.6562-32.703-18.465-44.512-11.805-11.805-27.812-18.445-44.508-18.465h-125.95c-16.699 0.019531-32.707 6.6602-44.512 18.465-11.805 11.809-18.445 27.816-18.465 44.512z">
+      </path>
+    </svg>
+    """
+  end
+end
+
 defmodule VachanWeb.SidebarMenuLiveComponent do
   use VachanWeb, :live_component
 
@@ -27,46 +46,10 @@ defmodule VachanWeb.SidebarMenuLiveComponent do
       id="drawer-navigation"
     >
       <div class="overflow-y-auto py-5 px-3 h-full bg-white dark:bg-gray-800">
-        <form action="#" method="GET" class="md:hidden mb-2">
-          <label for="sidebar-search" class="sr-only">Search</label>
-          <div class="relative">
-            <div class="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
-              <svg
-                class="w-5 h-5 text-gray-500 dark:text-gray-400"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  fill-rule="evenodd"
-                  clip-rule="evenodd"
-                  d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
-                >
-                </path>
-              </svg>
-            </div>
-            <input
-              type="text"
-              name="search"
-              id="sidebar-search"
-              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full pl-10 p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-              placeholder="Search"
-            />
-          </div>
-        </form>
         <ul class="space-y-2">
           <li>
             <.menu_item label="People" path={~p"/people"}>
-              <svg
-                aria-hidden="true"
-                class="w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path d="M2 10a8 8 0 018-8v8h8a8 8 0 11-16 0z"></path>
-                <path d="M12 2.252A8.014 8.014 0 0117.748 8H12V2.252z"></path>
-              </svg>
+              <VachanWeb.Common.Icons.people />
             </.menu_item>
           </li>
 
@@ -106,7 +89,7 @@ defmodule VachanWeb.SidebarMenuLiveComponent do
                 >
                 </path>
               </svg>
-              <span class="flex-1 ml-3 text-left whitespace-nowrap">Pages</span>
+              <span class="flex-1 ml-3 text-left whitespace-nowrap">Mailers</span>
               <svg
                 aria-hidden="true"
                 class="w-6 h-6"
@@ -128,7 +111,7 @@ defmodule VachanWeb.SidebarMenuLiveComponent do
                   href="#"
                   class="flex items-center p-2 pl-11 w-full text-base font-medium text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
                 >
-                  Settings
+                  Campaigns
                 </a>
               </li>
               <li>
@@ -136,7 +119,7 @@ defmodule VachanWeb.SidebarMenuLiveComponent do
                   href="#"
                   class="flex items-center p-2 pl-11 w-full text-base font-medium text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
                 >
-                  Kanban
+                  Templates
                 </a>
               </li>
               <li>
