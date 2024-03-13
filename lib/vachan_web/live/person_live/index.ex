@@ -7,12 +7,10 @@ defmodule VachanWeb.PersonLive.Index do
   @impl true
   def mount(_params, _session, socket) do
     {:ok, people} = Person.read_all()
-    {:ok, lists} = List.read_all()
 
     {:ok,
      socket
-     |> stream(:people, people)
-     |> stream(:lists, lists)}
+     |> stream(:people, people)}
   end
 
   @impl true

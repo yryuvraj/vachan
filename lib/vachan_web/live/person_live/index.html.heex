@@ -24,7 +24,7 @@
     <.link patch={~p"/people/#{person}/edit"}>Edit</.link>
   </:action>
   <:action :let={{_id, person}}>
-    <.link patch={~p"/people/#{person}/lists"}>Add to list </.link>
+    <.link patch={~p"/people/#{person}/lists"}>Add to lists </.link>
   </:action>
   <:action :let={{id, person}}>
     <.link
@@ -58,13 +58,4 @@
   show
   on_cancel={JS.patch(~p"/people")}
 >
-  <.live_component
-    module={VachanWeb.PersonLive.AddToListComponent}
-    id={@person.id}
-    title="Add to List"
-    action={@live_action}
-    person={@person}
-    lists={@streams.lists}
-    patch={~p"/people"}
-  />
 </.modal>
