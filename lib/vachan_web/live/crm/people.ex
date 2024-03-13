@@ -1,4 +1,20 @@
-defmodule VachanWeb.PersonLive.FormComponent do
+defmodule VachanWeb.Crm.People do
+  use VachanWeb, :live_view
+
+  alias Vachan.Crm
+
+  @impl true
+  def mount(_params, _session, socket) do
+    {:ok, people} = Crm.Person.read_all()
+
+    {:ok,
+     socket
+     |> assign(:page_title, "People")
+     |> stream(:people, people)}
+  end
+end
+
+defmodule VachanWeb.Crm.PersonFormComponent do
   use VachanWeb, :live_component
 
   alias Vachan.Crm
@@ -31,7 +47,7 @@ defmodule VachanWeb.PersonLive.FormComponent do
     """
   end
 
-  defp create_form(_assigns) do
+  defp create_form(assigns) do
     Crm.Person
     |> AshPhoenix.Form.for_create(:create, api: Crm)
     |> to_form()

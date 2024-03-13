@@ -1,6 +1,7 @@
 defmodule Vachan.Crm.Person do
   use Ash.Resource,
-    data_layer: AshPostgres.DataLayer
+    data_layer: AshPostgres.DataLayer,
+    notifiers: [Ash.Notifier.PubSub]
 
   resource do
     description "A person is a contact in the CRM system."
@@ -9,6 +10,16 @@ defmodule Vachan.Crm.Person do
   postgres do
     table "people"
     repo Vachan.Repo
+  end
+
+  pub_sub do
+    module VachanWeb.Endpoint
+    prefix "person"
+    broadcast_type :phoenix_broadcast
+
+    publish :create, ["created"]
+    publish :update, ["updated"]
+    publish :destroy, ["destroyed"]
   end
 
   code_interface do
@@ -78,5 +89,13 @@ defmodule Vachan.Crm.Person do
 
   identities do
     identity :unique_email, [:email]
+  end
+
+  relationships do
+    many_to_many :lists, Vachan.Crm.List do
+      through Vachan.Crm.PersonList
+      source_attribute_on_join_resource :person_id
+      destination_attribute_on_join_resource :list_id
+    end
   end
 end

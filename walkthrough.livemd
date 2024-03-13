@@ -4,6 +4,7 @@
 
 ```elixir
 alias Vachan.Crm.Person
+alias Vachan.Crm.List
 ```
 
 ```elixir
@@ -26,5 +27,145 @@ new_person =
 ```
 
 ```elixir
+defmodule Fixture do
+  def create_person(person) do
+    Vachan.Crm.Person
+    |> Ash.Changeset.for_create(:create, person)
+    |> Vachan.Crm.create!()
+  end
+end
+```
 
+```elixir
+l = [
+  %{first_name: "Vernon", last_name: "Avery", email: "brian89@briggs.biz"},
+  %{first_name: "Brooke", last_name: "Johnson", email: "julia55@hotmail.com"},
+  %{first_name: "Amy", last_name: "Cook", email: "deborah64@barnes.org"},
+  %{first_name: "Thomas", last_name: "Kim", email: "bstevens@yahoo.com"},
+  %{first_name: "Michelle", last_name: "Beard", email: "anna83@gmail.com"},
+  %{first_name: "Mitchell", last_name: "Martinez", email: "solomonsarah@fuentes-hall.com"},
+  %{first_name: "Tony", last_name: "Sanders", email: "pspencer@knapp.com"},
+  %{first_name: "Derrick", last_name: "Higgins", email: "torresdebra@hotmail.com"},
+  %{first_name: "Peter", last_name: "Garza", email: "jeffwilliams@gmail.com"},
+  %{first_name: "Sophia", last_name: "Mooney", email: "christineaustin@hotmail.com"},
+  %{first_name: "Jeremy", last_name: "Owens", email: "lkey@duncan.com"},
+  %{first_name: "Lori", last_name: "Warren", email: "martinezjason@gmail.com"},
+  %{first_name: "Richard", last_name: "Bishop", email: "ocooper@hotmail.com"},
+  %{first_name: "David", last_name: "Peterson", email: "salasparker@kane.com"},
+  %{first_name: "Timothy", last_name: "Delgado", email: "andersonjohn@grant-sawyer.com"},
+  %{first_name: "Maureen", last_name: "Taylor", email: "johnsonkurt@kennedy-scott.com"},
+  %{first_name: "James", last_name: "Clark", email: "james81@gmail.com"},
+  %{first_name: "Chelsea", last_name: "Garcia", email: "cwilliams@lewis.com"},
+  %{first_name: "Matthew", last_name: "Nielsen", email: "vincentali@west.biz"},
+  %{first_name: "Tanya", last_name: "Klein", email: "kellerjeffrey@gmail.com"},
+  %{first_name: "George", last_name: "Smith", email: "johnbyrd@yahoo.com"},
+  %{first_name: "Sydney", last_name: "Bruce", email: "charlesmontgomery@hotmail.com"},
+  %{first_name: "Howard", last_name: "Swanson", email: "prichardson@hotmail.com"},
+  %{first_name: "Margaret", last_name: "Reese", email: "whiteariana@yahoo.com"},
+  %{first_name: "Kimberly", last_name: "Russo", email: "wendy30@yahoo.com"},
+  %{first_name: "Marvin", last_name: "Schneider", email: "ross39@cervantes.com"},
+  %{first_name: "John", last_name: "Walker", email: "gutierrezbridget@yahoo.com"},
+  %{first_name: "Daniel", last_name: "Harper", email: "martinkaren@yahoo.com"},
+  %{first_name: "Donald", last_name: "Cooper", email: "sue90@meyer-stevens.com"},
+  %{first_name: "William", last_name: "Williams", email: "escobarcarolyn@yahoo.com"},
+  %{first_name: "John", last_name: "Glenn", email: "wandashaw@smith-blanchard.com"},
+  %{first_name: "Rebecca", last_name: "Schaefer", email: "kjoyce@gmail.com"},
+  %{first_name: "Rebecca", last_name: "Morton", email: "michelle26@gmail.com"},
+  %{first_name: "Jeffrey", last_name: "Brown", email: "ksantiago@gmail.com"},
+  %{first_name: "Travis", last_name: "Brown", email: "browntaylor@yahoo.com"},
+  %{first_name: "Tara", last_name: "Cruz", email: "summerssamantha@ramirez.com"},
+  %{first_name: "Sabrina", last_name: "Sherman", email: "nroth@cain-galvan.org"},
+  %{first_name: "Matthew", last_name: "Ramos", email: "arellanotimothy@kelly.com"},
+  %{first_name: "Christopher", last_name: "Henderson", email: "cannonantonio@lewis.com"},
+  %{first_name: "Michelle", last_name: "Ford", email: "joseph63@chavez.com"},
+  %{first_name: "Jerry", last_name: "Morales", email: "deborah30@bennett-hodges.com"},
+  %{first_name: "Tonya", last_name: "Wright", email: "muellerteresa@gmail.com"},
+  %{first_name: "Kristina", last_name: "Cameron", email: "chavezedwin@hotmail.com"},
+  %{first_name: "Karen", last_name: "Madden", email: "hray@hotmail.com"},
+  %{first_name: "Kimberly", last_name: "Brewer", email: "cherylellis@davis.com"},
+  %{first_name: "Adam", last_name: "Schneider", email: "brittanyross@hotmail.com"},
+  %{first_name: "Jeffrey", last_name: "Price", email: "canderson@gmail.com"},
+  %{first_name: "Cole", last_name: "Weiss", email: "martinezjames@french.com"},
+  %{first_name: "Jessica", last_name: "Williams", email: "yjohnson@davis.com"},
+  %{first_name: "Cynthia", last_name: "Walker", email: "wwalters@dalton-booth.com"},
+  %{first_name: "Jim", last_name: "Rice", email: "stephensalas@gmail.com"},
+  %{first_name: "Kevin", last_name: "Turner", email: "millercatherine@wiley.com"},
+  %{first_name: "Sarah", last_name: "Weaver", email: "williamsbrett@gmail.com"},
+  %{first_name: "Nicole", last_name: "Robinson", email: "mollygarcia@hotmail.com"},
+  %{first_name: "Leonard", last_name: "Lopez", email: "kelleydonald@yahoo.com"},
+  %{first_name: "Nancy", last_name: "Malone", email: "rhonda01@shepard-tran.com"},
+  %{first_name: "Lindsey", last_name: "Anderson", email: "fergusonsuzanne@garrett.biz"},
+  %{first_name: "Allison", last_name: "Martinez", email: "brookscharles@yahoo.com"},
+  %{first_name: "Ryan", last_name: "King", email: "christina12@waters-deleon.com"},
+  %{first_name: "Katherine", last_name: "Zuniga", email: "julielee@hotmail.com"},
+  %{first_name: "Sandra", last_name: "Perkins", email: "zhoffman@lee.com"},
+  %{first_name: "Joshua", last_name: "Perez", email: "jeffersonstephanie@white-oneal.info"},
+  %{first_name: "Luis", last_name: "Schroeder", email: "jasondecker@hotmail.com"},
+  %{first_name: "Monica", last_name: "Lewis", email: "michellelee@armstrong.com"},
+  %{first_name: "Bianca", last_name: "Meyers", email: "tyler41@gmail.com"},
+  %{first_name: "Natasha", last_name: "Johnson", email: "tmurphy@yahoo.com"},
+  %{first_name: "Jordan", last_name: "Tapia", email: "janicemoore@king.com"},
+  %{first_name: "Sharon", last_name: "Garza", email: "heather73@gmail.com"},
+  %{first_name: "Joseph", last_name: "Howe", email: "vstephens@hotmail.com"},
+  %{first_name: "Laura", last_name: "Goodwin", email: "michael75@shepherd.com"},
+  %{first_name: "Alexandra", last_name: "Munoz", email: "brownheather@smith-holmes.biz"},
+  %{first_name: "John", last_name: "Lopez", email: "melinda07@gmail.com"},
+  %{first_name: "Lawrence", last_name: "Bryant", email: "brandongray@jackson.com"},
+  %{first_name: "Patrick", last_name: "Lynch", email: "audrey21@banks.com"},
+  %{first_name: "Kelly", last_name: "Evans", email: "carla63@velasquez.com"},
+  %{first_name: "Amanda", last_name: "Ware", email: "laurie03@hotmail.com"},
+  %{first_name: "Michelle", last_name: "Hansen", email: "teresahart@lucas.com"},
+  %{first_name: "Rodney", last_name: "Smith", email: "briangonzales@ruiz.com"},
+  %{first_name: "Kathryn", last_name: "Boyd", email: "tracey68@johnson.com"},
+  %{first_name: "David", last_name: "Little", email: "iperry@bennett.info"},
+  %{first_name: "Joseph", last_name: "Morris", email: "mmitchell@hotmail.com"},
+  %{first_name: "Mark", last_name: "Cummings", email: "jennifersimpson@cook-jones.org"},
+  %{first_name: "Tiffany", last_name: "Sullivan", email: "campbelllauren@hotmail.com"},
+  %{first_name: "Zachary", last_name: "Montoya", email: "georgealan@gmail.com"},
+  %{first_name: "Danielle", last_name: "Riley", email: "phillip70@reed-bradley.info"},
+  %{first_name: "Ronald", last_name: "Bradley", email: "barnettdavid@gmail.com"},
+  %{first_name: "Russell", last_name: "Carpenter", email: "fletcherdavid@hernandez-williams.biz"},
+  %{first_name: "Joshua", last_name: "Marsh", email: "htodd@hotmail.com"},
+  %{first_name: "Steven", last_name: "Larson", email: "xboyd@gmail.com"},
+  %{first_name: "Albert", last_name: "Kramer", email: "ricardo46@oconnor-jordan.com"},
+  %{first_name: "Molly", last_name: "Maddox", email: "youngmichael@yang.com"},
+  %{first_name: "Mark", last_name: "Hughes", email: "vjackson@yahoo.com"},
+  %{first_name: "Carl", last_name: "Marquez", email: "scottcarr@hotmail.com"},
+  %{first_name: "Laura", last_name: "Cox", email: "anthony69@yahoo.com"},
+  %{first_name: "Laura", last_name: "Jackson", email: "anamartin@stevens.com"},
+  %{first_name: "Anthony", last_name: "Hunter", email: "jessicacabrera@gmail.com"},
+  %{first_name: "Michelle", last_name: "King", email: "fandrews@hotmail.com"},
+  %{first_name: "Joseph", last_name: "Fox", email: "lisa81@smith-ortiz.com"},
+  %{first_name: "Benjamin", last_name: "Cherry", email: "brandybates@gardner.info"},
+  %{first_name: "Melissa", last_name: "Wood", email: "wrightcourtney@hotmail.com"}
+]
+
+Enum.map(l, fn x -> Fixture.create_person(x) end)
+```
+
+```elixir
+h(Vachan.Crm.List)
+```
+
+```elixir
+l1 = Vachan.Crm.List.read_all!() |> hd
+p1 = Vachan.Crm.Person.read_all!() |> hd
+```
+
+```elixir
+# l1.add_person(:update, p1.id)
+
+l1 |> Vachan.Crm.List.add_person(p1.id)
+```
+
+```elixir
+Vachan.Crm.load!(l1, :people)
+```
+
+```elixir
+Enum.map(Vachan.Crm.load!(p1, :lists).lists, fn x -> x.id end)
+```
+
+```elixir
+Enum.map(Vachan.Crm.load!(p1, :lists).lists, fn x -> x.name end)
 ```

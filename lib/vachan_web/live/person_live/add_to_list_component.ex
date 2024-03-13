@@ -1,5 +1,5 @@
-defmodule VachanWeb.PersonLive.AddToListComponent do
-  use VachanWeb, :live_component
+defmodule VachanWeb.PersonLive.AddToList do
+  use VachanWeb, :live_view
 
   alias Vachan.Crm
 
@@ -11,19 +11,92 @@ defmodule VachanWeb.PersonLive.AddToListComponent do
         Add a person to list
       </.header>
       <.table id="add-to-list-table" rows={@lists}>
-        <:col :let={{_id, list}} label="List name"><%= list.name %></:col>
+        <:col :let={list} label="List name"><%= list.name %></:col>
+        <:action :let={list}>
+          <%= if list.id in @person_lists do %>
+            <.link phx-click={
+              JS.push("remove_from_list",
+                value: %{list_id: list.id, person_id: @person.id}
+              )
+            }>
+              Remove
+            </.link>
+          <% else %>
+            <.link phx-click={
+              JS.push("add_to_list",
+                value: %{list_id: list.id, person_id: @person.id}
+              )
+            }>
+              Add
+            </.link>
+          <% end %>
+        </:action>
       </.table>
     </div>
     """
   end
 
+  def mount(%{"id" => person_id} = params, _session, socket) do
+    if connected?(socket) do
+      VachanWeb.Endpoint.subscribe("person_list:created")
+      VachanWeb.Endpoint.subscribe("person_list:destroyed")
+    end
+
+    lists = Crm.List.read_all!()
+    person = Crm.Person.get_by_id!(person_id)
+
+    {:ok,
+     socket
+     |> assign(lists: lists)
+     |> assign(person: person)
+     |> assign(person_lists: Enum.map(Vachan.Crm.load!(person, :lists).lists, fn x -> x.id end))}
+  end
+
   @impl true
-  def handle_event("add_to_list", %{"person_id" => person_id, "list_id" => list_id}, socket) do
+  def handle_event(
+        "add_to_list",
+        %{"person_id" => person_id, "list_id" => list_id},
+        socket
+      ) do
     person = Crm.Person.get_by_id!(person_id)
     list = Crm.List.get_by_id!(list_id)
 
-    {:ok, _} = Crm.List.add_person(list, person)
+    {:ok, _} = Crm.List.add_person(list, person.id)
 
     {:noreply, socket}
+  end
+
+  @impl true
+  def handle_event(
+        "remove_from_list",
+        %{"person_id" => person_id, "list_id" => list_id},
+        socket
+      ) do
+    person = Crm.Person.get_by_id!(person_id)
+    list = Crm.List.get_by_id!(list_id)
+
+    {:ok, _} = Crm.List.remove_person(list, person.id)
+
+    {:noreply, socket}
+  end
+
+  defp handle_modification(socket) do
+    person = socket.assigns.person
+
+    {:noreply,
+     socket
+     |> assign(person_lists: Enum.map(Vachan.Crm.load!(person, :lists).lists, fn x -> x.id end))}
+  end
+
+  @impl true
+  def handle_info(%{topic: "person_list:created", payload: _payload}, socket) do
+    IO.inspect("here>>>person_list:created")
+    handle_modification(socket)
+  end
+
+  @impl true
+  def handle_info(%{topic: "person_list:destroyed", payload: _payload}, socket) do
+    IO.inspect("here>>>person_list:deleted")
+    handle_modification(socket)
   end
 end
