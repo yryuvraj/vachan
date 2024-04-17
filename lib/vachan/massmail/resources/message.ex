@@ -21,7 +21,7 @@ defmodule Vachan.Massmail.Message do
   end
 
   actions do
-    defaults [ :read, :update, :destroy]
+    defaults [:read, :update, :destroy]
 
     read :by_id do
       argument :id, :uuid, allow_nil?: false
@@ -37,7 +37,6 @@ defmodule Vachan.Massmail.Message do
       change manage_relationship(:campaign_id, :campaign, type: :replace)
       change manage_relationship(:recepient_id, :recepient, type: :replace)
     end
-
   end
 
   @possible_status [:created, :sent, :failed, :queued, :cancelled]

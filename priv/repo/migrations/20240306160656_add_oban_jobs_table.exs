@@ -10,5 +10,4 @@ defmodule Vachan.Repo.Migrations.AddObanJobsTable do
   def down do
     Oban.Migration.down(version: 1)
   end
-
 end
