@@ -11,7 +11,8 @@ config :vachan,
   ash_apis: [
     Vachan.Accounts,
     Vachan.Crm,
-    Vachan.Massmail
+    Vachan.Massmail,
+    Vachan.Prelaunch
   ]
 
 config :ash, :compatible_foreign_key_types, [

@@ -22,7 +22,7 @@ defmodule VachanWeb.Router do
 
     get "/demo", PageController, :home
 
-    get "/", PageController, :home
+    live "/", PrelaunchLive.Homepage
     # Leave out `register_path` and `reset_path` if you don't want to support
     # user registration and/or password resets respectively.
     sign_in_route(register_path: "/register", reset_path: "/reset")

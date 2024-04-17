@@ -65,6 +65,7 @@ defmodule VachanWeb.PersonLive.FormComponent do
     {:noreply, assign(socket, form: form)}
   end
 
+  @impl true
   def handle_event("save", %{"form" => person_params}, socket) do
     IO.inspect(socket.assigns)
     save_person(socket, socket.assigns.action, person_params)
