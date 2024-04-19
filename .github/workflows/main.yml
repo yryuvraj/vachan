@@ -73,13 +73,9 @@ jobs:
     concurrency: deploy-group # optional: ensure only one action runs at a time
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 2
       - uses: superfly/flyctl-actions/setup-flyctl@master
-      - name: Setup tmate session
-        uses: mxschmitt/action-tmate@v3
       - name: deploying to fly.io
-        if: ${{ github.ref_name == 'main' && contains(github.ref, 'refs/tags/') }}
+        if: ${{ github.ref_name == 'main' && contains(github.ref, 'refs/tags/prod') }}
         run: flyctl deploy --remote-only
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
