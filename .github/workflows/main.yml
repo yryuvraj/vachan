@@ -73,6 +73,8 @@ jobs:
     concurrency: deploy-group # optional: ensure only one action runs at a time
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
       - uses: superfly/flyctl-actions/setup-flyctl@master
       - name: Setup tmate session
         uses: mxschmitt/action-tmate@v3
