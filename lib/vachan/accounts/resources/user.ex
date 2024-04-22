@@ -49,7 +49,7 @@ defmodule Vachan.Accounts.User do
 
   identities do
     identity :unique_email, [:email] do
-    eager_check_with Vachan.Accounts
+      eager_check_with Vachan.Accounts
     end
   end
 
