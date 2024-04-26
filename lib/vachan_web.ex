@@ -54,6 +54,13 @@ defmodule VachanWeb do
       use Phoenix.LiveView,
         layout: {VachanWeb.Layouts, :app}
 
+      def ash_opts(socket, opts \\ []) do
+        Keyword.merge(
+          [actor: socket.assigns[:current_user], tenant: socket.assigns[:current_org].id],
+          opts
+        )
+      end
+
       unquote(html_helpers())
     end
   end
@@ -61,6 +68,13 @@ defmodule VachanWeb do
   def live_component do
     quote do
       use Phoenix.LiveComponent
+
+      def ash_opts(assigns, opts \\ []) do
+        Keyword.merge(
+          [actor: assigns[:current_user], tenant: assigns[:current_org].id],
+          opts
+        )
+      end
 
       unquote(html_helpers())
     end

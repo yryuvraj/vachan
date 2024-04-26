@@ -7,18 +7,11 @@ defmodule VachanWeb.PersonLive.Index do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, people} = Person.read_all(ash_opts(socket))
+    people = Person.read_all!(ash_opts(socket))
 
     {:ok,
      socket
      |> stream(:people, people)}
-  end
-
-  def ash_opts(socket, opts \\ []) do
-    Keyword.merge(
-      [actor: socket.assigns[:current_user], tenant: socket.assigns[:current_org].id],
-      opts
-    )
   end
 
   @impl true

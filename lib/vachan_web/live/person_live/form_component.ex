@@ -31,15 +31,6 @@ defmodule VachanWeb.PersonLive.FormComponent do
     """
   end
 
-  def ash_opts(assigns, opts \\ []) do
-    IO.inspect(assigns)
-
-    Keyword.merge(
-      [actor: assigns[:current_user], tenant: assigns[:current_org].id],
-      opts
-    )
-  end
-
   defp create_form(assigns) do
     Crm.Person
     |> AshPhoenix.Form.for_create(:create, ash_opts(assigns, api: Crm))

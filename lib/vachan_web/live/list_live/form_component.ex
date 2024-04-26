@@ -31,13 +31,13 @@ defmodule VachanWeb.ListLive.FormComponent do
 
   defp create_form(assigns) do
     Crm.List
-    |> AshPhoenix.Form.for_create(:create, api: Crm)
+    |> AshPhoenix.Form.for_create(:create, ash_opts(assigns, api: Crm))
     |> to_form()
   end
 
   defp update_form(assigns) do
     assigns.list
-    |> AshPhoenix.Form.for_update(:update, api: Crm)
+    |> AshPhoenix.Form.for_update(:update, ash_opts(assigns, api: Crm))
     |> to_form()
   end
 
@@ -64,7 +64,6 @@ defmodule VachanWeb.ListLive.FormComponent do
   end
 
   def handle_event("save", %{"form" => list_params}, socket) do
-    IO.inspect(socket.assigns)
     save_list(socket, socket.assigns.action, list_params)
   end
 

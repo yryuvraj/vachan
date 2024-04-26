@@ -8,18 +8,17 @@ defmodule VachanWeb.ListLive.Index do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, lists} = List.read_all()
+    {:ok, lists} = List.read_all(ash_opts(socket))
     total_count = length(lists)
     initial_page = get_page(lists, 1)
 
     {:ok,
-     assign(socket,
-       lists: lists,
-       total_count: total_count,
-       page_limit: @page_limit,
-       current_page: 1
-     )
-     |> stream(:current_page_list, initial_page)}
+     socket
+     |> assign(:total_count, total_count)
+     |> assign(:page_limit, @page_limit)
+     |> assign(:current_page, 1)
+     |> stream(:current_page_list, initial_page)
+     |> stream(:lists, lists)}
   end
 
   @impl true

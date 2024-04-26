@@ -25,7 +25,7 @@ new_person =
       email: "anuvrat@anuvrat.in"
     }
   )
-  |> Vachan.Crm.create!(authorize?: true)
+  |> Vachan.Crm.create!(authorize?: false, actor: nil)
 
 # new_post =
 #   MyAshPhoenixApp.Blog.Post
@@ -37,7 +37,11 @@ new_person =
 defmodule Fixture do
   def create_person(person) do
     Vachan.Crm.Person
-    |> Ash.Changeset.for_create(:create, person)
+    |> Ash.Changeset.for_create(:create, person,
+      actor: nil,
+      authorize?: false,
+      tenant: "59199639-9b03-4f5c-bbf6-04b2ebdb12b5"
+    )
     |> Vachan.Crm.create!()
   end
 end
