@@ -91,11 +91,17 @@ defmodule Vachan.Accounts.User do
   end
 
   relationships do
-    many_to_many :team, Vachan.Organizations.Organization do
+    many_to_many :orgs, Vachan.Organizations.Organization do
       through Vachan.Organizations.Team
-      api Vachan.Organization
+      api Vachan.Organizations
       source_attribute_on_join_resource :member_id
       destination_attribute_on_join_resource :organization_id
+    end
+
+    has_many :orgs_join_assoc, Vachan.Organizations.Team do
+      api Vachan.Organizations
+      source_attribute :id
+      destination_attribute :member_id
     end
 
     has_one :profile, Vachan.Profiles.Profile do
