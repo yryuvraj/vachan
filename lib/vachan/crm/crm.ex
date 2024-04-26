@@ -6,4 +6,9 @@ defmodule Vachan.Crm do
     resource Vachan.Crm.List
     resource Vachan.Crm.PersonList
   end
+
+  authorization do
+    require_actor? true
+    authorize :by_default
+  end
 end

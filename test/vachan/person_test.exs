@@ -3,6 +3,8 @@ defmodule Vachan.PersonTest do
   use Vachan.DataCase
   alias Vachan.Crm
 
+  import Vachan.AccountsFixtures
+
   describe "person creation" do
     @valid_attrs %{
       "email" => "someone@something.com",
@@ -23,7 +25,8 @@ defmodule Vachan.PersonTest do
     }
 
     test "should be created with valid attributes" do
-      person = create_person(@valid_attrs, :no_user)
+      user = confirmed_user()
+      person = create_person(@valid_attrs, user)
 
       assert person.first_name == @valid_attrs["first_name"]
       assert person.last_name == @valid_attrs["last_name"]
@@ -34,7 +37,7 @@ defmodule Vachan.PersonTest do
   defp create_person(attrs, user) do
     {:ok, person} =
       Crm.Person
-      |> Ash.Changeset.for_create(:create, attrs)
+      |> Ash.Changeset.for_create(:create, attrs, actor: user)
       |> Crm.create()
 
     person

@@ -12,6 +12,11 @@ defmodule Vachan.Massmail.Campaign do
     repo Vachan.Repo
   end
 
+  multitenancy do
+    strategy :attribute
+    attribute :organization_id
+  end
+
   code_interface do
     define_for Vachan.Massmail
 
@@ -97,6 +102,10 @@ defmodule Vachan.Massmail.Campaign do
   relationships do
     has_many :messages, Vachan.Massmail.Message
     belongs_to :list, Vachan.Crm.List, api: Vachan.Crm, attribute_type: :integer
+
+    belongs_to :organization, Vachan.Organizations.Organization do
+      api Vachan.Organizations
+    end
   end
 
   validations do

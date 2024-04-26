@@ -12,6 +12,11 @@ defmodule Vachan.Crm.List do
     repo Vachan.Repo
   end
 
+  multitenancy do
+    strategy :attribute
+    attribute :organization_id
+  end
+
   pub_sub do
     module VachanWeb.Endpoint
     prefix "list"
@@ -69,6 +74,10 @@ defmodule Vachan.Crm.List do
       through Vachan.Crm.PersonList
       source_attribute_on_join_resource :list_id
       destination_attribute_on_join_resource :person_id
+    end
+
+    belongs_to :organization, Vachan.Organizations.Organization do
+      api Vachan.Organizations
     end
   end
 

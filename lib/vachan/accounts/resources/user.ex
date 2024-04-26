@@ -10,7 +10,40 @@ defmodule Vachan.Accounts.User do
   end
 
   actions do
-    defaults [:read]
+    defaults [:read, :create]
+  end
+
+  changes do
+    change after_action(fn changeset, result ->
+             organization =
+               Vachan.Organizations.Organization
+               |> Ash.Changeset.for_create(
+                 :create,
+                 %{
+                   name: "personal_" <> result.id
+                 },
+                 actor: result
+               )
+               |> Vachan.Organizations.create!(authorize?: true)
+
+             Vachan.Organizations.Team
+             |> Ash.Changeset.for_create(
+               :create,
+               %{role: :owner},
+               actor: result
+             )
+             |> Ash.Changeset.manage_relationship(:member, result, type: :append)
+             |> Ash.Changeset.manage_relationship(
+               :organization,
+               organization,
+               type: :append
+             )
+             |> Vachan.Organizations.create!(authorize?: true)
+
+             {:ok, result}
+           end),
+           # only do this when a user is created.
+           on: [:create]
   end
 
   authentication do
@@ -58,7 +91,12 @@ defmodule Vachan.Accounts.User do
   end
 
   relationships do
-    belongs_to :tenant, Vachan.Organization.Tenant, api: Vachan.Organization
+    many_to_many :team, Vachan.Organizations.Organization do
+      through Vachan.Organizations.Team
+      api Vachan.Organization
+      source_attribute_on_join_resource :member_id
+      destination_attribute_on_join_resource :organization_id
+    end
 
     has_one :profile, Vachan.Profiles.Profile do
       api Vachan.Profiles

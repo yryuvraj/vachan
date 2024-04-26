@@ -13,7 +13,7 @@ config :vachan,
     Vachan.Crm,
     Vachan.Massmail,
     Vachan.Prelaunch,
-    Vachan.Organization,
+    Vachan.Organizations,
     Vachan.Profiles
   ]
 

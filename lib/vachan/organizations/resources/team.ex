@@ -8,42 +8,59 @@ defmodule Vachan.Organizations.Team do
       authorize_if relates_to_actor_via(:member)
     end
 
+    policy action_type(:create) do
+      authorize_if always()
+    end
+
     policy action_type(:read) do
       authorize_if relates_to_actor_via(:member)
     end
-
   end
 
   actions do
-    defaults [:create, :read, :update]
+    defaults [:read, :update, :create, :destroy]
+
+    read :by_id do
+      argument :id, :uuid, allow_nil?: false
+      get? true
+      filter expr(id == ^arg(:id))
+    end
+
+    read :by_org_and_member do
+      argument :organization_id, :uuid, allow_nil?: false
+      argument :member_id, :uuid, allow_nil?: false
+      get? true
+      filter expr(organization_id == ^arg(:organization_id) and member_id == ^arg(:member_id))
+    end
   end
 
-  @possible_roles = ["admin", "member", "owner"]
+  code_interface do
+    define_for Vachan.Organizations
+
+    define :create, action: :create
+    define :update, action: :update
+    define :destroy, action: :destroy
+    define :read_all, action: :read
+    define :get_by_id, args: [:id], action: :by_id
+
+    define :get_by_org_and_member,
+      args: [:organization_id, :member_id],
+      action: :by_org_and_member
+  end
+
+  @possible_roles [:admin, :member, :owner]
 
   attributes do
-    attribute :id, :uuid do
-      primary_key? true
-      allow_nil? false
-    end
+    uuid_primary_key :id
 
-    attribute :name, :string do
-      allow_nil? false
-      constraints max_length: 64
-    end
-
-    attribute :role, :string do
+    attribute :role, :atom do
       allow_nil? false
       constraints one_of: @possible_roles
+      default :member
     end
 
-    attribute :created_at, :utc_datetime do
-      allow_nil? false
-    end
-    attribute :updated_at, :utc_datetime do
-      allow_nil? false
-    end
-
-
+    create_timestamp :created_at
+    update_timestamp :updated_at
   end
 
   postgres do
@@ -54,13 +71,13 @@ defmodule Vachan.Organizations.Team do
   relationships do
     belongs_to :member, Vachan.Accounts.User do
       api Vachan.Accounts
-      source_attribute :id
-      destination_attribute :id
+      primary_key? true
+      allow_nil? false
     end
 
     belongs_to :organization, Vachan.Organizations.Organization do
-      source_attribute :id
-      destination_attribute :id
+      primary_key? true
+      allow_nil? false
     end
   end
 end

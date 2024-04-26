@@ -5,19 +5,24 @@ defmodule VachanWeb.PersonLive.Index do
 
   alias Vachan.Crm.Person
 
-
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, page} = Person.read_all()
+    page = Person.read_all!(ash_opts(socket))
     last_record = List.last(page.results)
     prev_record = List.first(page.results)
-     {:ok,
-     assign(socket,
-       :last_record, last_record)
-      |> assign(:people, page)
-      |> assign(:prev_record, prev_record)
-      |> stream(:page, page.results)
-    }
+
+    {:ok,
+     assign(socket, :last_record, last_record)
+     |> assign(:people, page)
+     |> assign(:prev_record, prev_record)
+     |> stream(:page, page.results)}
+  end
+
+  def ash_opts(socket, opts \\ []) do
+    Keyword.merge(
+      [actor: socket.assigns[:current_user], tenant: socket.assigns[:current_org].id],
+      opts
+    )
   end
 
   @impl true
@@ -28,13 +33,13 @@ defmodule VachanWeb.PersonLive.Index do
   defp apply_action(socket, :edit, %{"id" => id}) do
     socket
     |> assign(:page_title, "Edit Person")
-    |> assign(:person, Person.get_by_id!(id))
+    |> assign(:person, Person.get_by_id!(id, ash_opts(socket)))
   end
 
   defp apply_action(socket, :add_to_list, %{"id" => id}) do
     socket
     |> assign(:page_title, "Add to Lists")
-    |> assign(:person, Person.get_by_id!(id))
+    |> assign(:person, Person.get_by_id!(id, ash_opts(socket)))
   end
 
   defp apply_action(socket, :new, _params) do
@@ -56,8 +61,8 @@ defmodule VachanWeb.PersonLive.Index do
 
   @impl true
   def handle_event("delete", %{"id" => id}, socket) do
-    person = Person.get_by_id!(id)
-    {:ok, _} = Person.destroy(person)
+    person = Person.get_by_id!(id, ash_opts(socket))
+    {:ok, _} = Person.destroy(person, ash_opts(socket))
 
     {:noreply, stream_delete(socket, :people, person)}
   end
@@ -68,33 +73,32 @@ defmodule VachanWeb.PersonLive.Index do
   end
 
   def handle_event("next_page", %{"key_id" => key_id}, socket) do
-    {:ok, people} = Person.read_all(page: [after: key_id])
+    {:ok, people} = Person.read_all(ash_opts(socket, page: [after: key_id]))
     last_record = List.last(people.results)
     prev_record = List.first(people.results)
-    {:noreply,
-     assign(socket,:last_record, last_record )
-      |> assign(:people, people)
-      |> assign(:prev_record, prev_record)
-      |> stream(:page, people.results,reset: true)
-    }
 
+    {:noreply,
+     assign(socket, :last_record, last_record)
+     |> assign(:people, people)
+     |> assign(:prev_record, prev_record)
+     |> stream(:page, people.results, reset: true)}
   end
 
   def handle_event("prev_page", %{"key_id" => key_id}, socket) do
-    {:ok, people} = Person.read_all(page: [before: key_id])
+    {:ok, people} = Person.read_all(ash_opts(socket, page: [before: key_id]))
     prev_record = List.first(people.results)
     last_record = List.last(people.results)
-     {:noreply,
-     assign(socket,:last_record, last_record )
-      |> assign(:people, people)
-      |> assign(:prev_record, prev_record)
-      |> stream(:page, people.results,reset: true)
-    }
+
+    {:noreply,
+     assign(socket, :last_record, last_record)
+     |> assign(:people, people)
+     |> assign(:prev_record, prev_record)
+     |> stream(:page, people.results, reset: true)}
   end
 
   @impl true
   def handle_event("search", %{"query" => query}, socket) do
-    people = search_people_by_first_name(query)
+    people = search_people_by_first_name(query, socket)
 
     if String.trim(query) == "" do
       {:noreply, assign(socket, people: people)}
@@ -103,8 +107,8 @@ defmodule VachanWeb.PersonLive.Index do
     end
   end
 
-  defp search_people_by_first_name(query) when is_binary(query) do
-    {:ok, people} = Person.read_all()
+  defp search_people_by_first_name(query, socket) when is_binary(query) do
+    {:ok, people} = Person.read_all(ash_opts(socket))
     capitalized_query = String.capitalize(query)
 
     matching_people_data =

@@ -7,4 +7,9 @@ defmodule Vachan.Massmail do
     resource Vachan.Massmail.Template
     resource Vachan.Massmail.Event
   end
+
+  authorization do
+    require_actor? true
+    authorize :by_default
+  end
 end

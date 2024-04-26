@@ -8,14 +8,19 @@ defmodule VachanWeb.PersonLive.Show do
     {:ok, socket}
   end
 
+  def ash_opts(socket, opts \\ []) do
+    Keyword.merge(
+      [actor: socket.assigns[:current_user], tenant: socket.assigns[:current_org].id],
+      opts
+    )
+  end
+
   @impl true
   def handle_params(%{"id" => id}, _, socket) do
-    IO.inspect(Crm.Person.get_by_id!(id))
-
     {:noreply,
      socket
      |> assign(:page_title, page_title(socket.assigns.live_action))
-     |> assign(:person, Crm.Person.get_by_id!(id))}
+     |> assign(:person, Crm.Person.get_by_id!(id, ash_opts(socket)))}
   end
 
   defp page_title(:show), do: "Show Person"

@@ -1,39 +1,82 @@
 defmodule Vachan.Organizations.Organization do
   use Ash.Resource,
-  data_layer: AshPostgres.DataLayer,
-  authorizers: [Ash.Policy.Authorizer]
+    data_layer: AshPostgres.DataLayer,
+    authorizers: [Ash.Policy.Authorizer]
 
   policies do
     policy action_type(:update) do
       authorize_if relates_to_actor_via(:owner)
     end
 
-    actions do
-      defaults [:create, :read, :update]
+    policy action_type(:create) do
+      authorize_if always()
+    end
+  end
+
+  code_interface do
+    define_for Vachan.Organizations
+
+    define :create, action: :create
+    define :update, action: :update
+    define :destroy, action: :destroy
+    define :read_all, action: :read
+    define :get_by_id, args: [:id], action: :by_id
+    define :add_member, args: [:member_id, :role], action: :add_member
+    define :remove_member, args: [:member_id, :role], action: :remove_member
+    define :get_personal_org_for_user, args: [:member_id], action: :personal_org_for_user
+  end
+
+  actions do
+    defaults [:create, :read, :update, :destroy]
+
+    read :by_id do
+      argument :id, :integer, allow_nil?: false
+      get? true
+      filter expr(id == ^arg(:id))
     end
 
-    attributes do
-      attribute :id, :uuid do
-        primary_key? true
-        allow_nil? false
-      end
-
-      attribute :name, :string do
-        allow_nil? false
-        constraints max_length: 64
-      end
+    read :personal_org_for_user do
+      argument :member_id, :uuid, allow_nil?: false
+      get? true
+      filter expr(name == "personal_" <> ^arg(:member_id))
     end
 
-    postgres do
-      table "organizations"
-      repo Vachan.Repo
+    update :add_member do
+      argument :member_id, :uuid, allow_nil?: false
+      argument :role, :atom, default: :member, allow_nil?: false
+
+      change manage_relationship(:member_id, :members, type: :append)
     end
 
-    relationships do
-      belongs_to :owner, User do
-        api Vachan.Accounts
-        source_attribute :id
-        destination_attribute :id
-      end
+    update :remove_member do
+      argument :member_id, :uuid, allow_nil?: false
+      change manage_relationship(:member_id, :members, type: :remove)
     end
+  end
+
+  attributes do
+    uuid_primary_key :id
+
+    attribute :name, :string do
+      allow_nil? false
+      constraints max_length: 64
+    end
+
+    create_timestamp :created_at
+    update_timestamp :updated_at
+  end
+
+  postgres do
+    table "organizations"
+    repo Vachan.Repo
+  end
+
+  relationships do
+    many_to_many :members, Vachan.Accounts.User do
+      through Vachan.Organizations.Team
+      api Vachan.Organizations
+      source_attribute_on_join_resource :organization_id
+      destination_attribute_on_join_resource :member_id
+    end
+  end
 end

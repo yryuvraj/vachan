@@ -7,6 +7,7 @@ alias Vachan.Crm.Person
 alias Vachan.Crm.List
 alias Vachan.Massmail
 alias Vachan.Crm
+1
 ```
 
 <!-- livebook:{"branch_parent_index":0} -->
@@ -24,7 +25,7 @@ new_person =
       email: "anuvrat@anuvrat.in"
     }
   )
-  |> Vachan.Crm.create!()
+  |> Vachan.Crm.create!(authorize?: true)
 
 # new_post =
 #   MyAshPhoenixApp.Blog.Post
@@ -210,4 +211,72 @@ p = Crm.Person.read_all!() |> hd
 
 ```elixir
 p.email |> to_string()
+```
+
+## testing
+
+```elixir
+
+```
+
+```elixir
+Vachan.Organizations.Organization
+|> Ash.Changeset.for_create(:create, %{name: "blah"}, actor: nil)
+|> Vachan.Organizations.create!(authorize?: false)
+```
+
+```elixir
+alias AshAuthentication.{Info, Strategy}
+alias Vachan.Accounts.User
+alias Vachan.Profiles
+
+attrs = %{
+  "email" => "test2@test",
+  "password" => "thisIsASillyPassword123",
+  "password_confirmation" => "thisIsASillyPassword123"
+}
+```
+
+```elixir
+strategy = Info.strategy!(User, :password)
+```
+
+```elixir
+Strategy.action(strategy, :register, attrs)
+```
+
+```elixir
+user = Vachan.Accounts.User |> Vachan.Accounts.read!() |> hd
+```
+
+```elixir
+org =
+  Vachan.Organizations.Organization
+  |> Vachan.Organizations.read!(actor: nil, authorize?: false)
+  |> hd
+```
+
+```elixir
+Vachan.Organizations.Team
+|> Ash.Changeset.for_create(
+  :create,
+  %{role: :owner},
+  actor: user
+)
+|> Ash.Changeset.manage_relationship(:member, user, type: :append)
+|> Ash.Changeset.manage_relationship(
+  :organization,
+  org,
+  type: :append
+)
+|> Vachan.Organizations.create!(authorize?: true)
+```
+
+```elixir
+Vachan.Accounts.User |> Ash.Query.filter(id: user.id)
+```
+
+```elixir
+require Ash.Query
+Ash.Query.filter(Vachan.Accounts.User, id: user.id) |> Vachan.Accounts.read!()
 ```
