@@ -94,6 +94,7 @@ defmodule VachanWeb.PersonLive.Index do
      |> assign(:people, people)
      |> assign(:prev_record, prev_record)
      |> stream(:page, people.results, reset: true)}
+
   end
 
   @impl true
