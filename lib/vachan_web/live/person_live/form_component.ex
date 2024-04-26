@@ -31,24 +31,24 @@ defmodule VachanWeb.PersonLive.FormComponent do
     """
   end
 
-  def ash_opts(socket, opts \\ []) do
-    IO.inspect(socket.assigns)
+  def ash_opts(assigns, opts \\ []) do
+    IO.inspect(assigns)
 
     Keyword.merge(
-      [actor: socket.assigns[:current_user], tenant: socket.assigns[:current_org].id],
+      [actor: assigns[:current_user], tenant: assigns[:current_org].id],
       opts
     )
   end
 
-  defp create_form(socket, _assigns) do
+  defp create_form(assigns) do
     Crm.Person
-    |> AshPhoenix.Form.for_create(:create, ash_opts(socket, api: Crm))
+    |> AshPhoenix.Form.for_create(:create, ash_opts(assigns, api: Crm))
     |> to_form()
   end
 
-  defp update_form(socket, assigns) do
+  defp update_form(assigns) do
     assigns.person
-    |> AshPhoenix.Form.for_update(:update, ash_opts(socket, api: Crm))
+    |> AshPhoenix.Form.for_update(:update, ash_opts(assigns, api: Crm))
     |> to_form()
   end
 
@@ -57,7 +57,7 @@ defmodule VachanWeb.PersonLive.FormComponent do
     {:ok,
      socket
      |> assign(assigns)
-     |> assign(:form, update_form(socket, assigns))}
+     |> assign(:form, update_form(assigns))}
   end
 
   @impl true
@@ -65,7 +65,7 @@ defmodule VachanWeb.PersonLive.FormComponent do
     {:ok,
      socket
      |> assign(assigns)
-     |> assign(:form, create_form(socket, assigns))}
+     |> assign(:form, create_form(assigns))}
   end
 
   @impl true
