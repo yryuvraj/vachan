@@ -6,14 +6,14 @@ defmodule VachanWeb.CampaignLive.Edit do
 
   @impl true
   def mount(%{"id" => id}, _session, socket) do
-    campaign = Campaign.get_by_id!(id)
+    campaign = Campaign.get_by_id!(id, ash_opts(socket))
 
     {:ok,
      socket
      |> assign(campaign: campaign)
-     |> assign(list_options: list_options())
+     |> assign(list_options: list_options(socket))
      |> assign(patch: ~p"/campaigns")
-     |> assign(form: update_form(campaign))}
+     |> assign(form: update_form(socket, campaign))}
   end
 
   @impl true
@@ -21,8 +21,8 @@ defmodule VachanWeb.CampaignLive.Edit do
     {:ok,
      socket
      |> assign(patch: ~p"/campaigns")
-     |> assign(list_options: list_options())
-     |> assign(form: create_form(socket.assigns))}
+     |> assign(list_options: list_options(socket))
+     |> assign(form: create_form(socket))}
   end
 
   @impl true
@@ -36,20 +36,20 @@ defmodule VachanWeb.CampaignLive.Edit do
     save_campaign(socket, socket.assigns.live_action, campaign_params)
   end
 
-  defp create_form(_assigns) do
+  defp create_form(socket) do
     Campaign
-    |> AshPhoenix.Form.for_create(:create, api: Vachan.Massmail)
+    |> AshPhoenix.Form.for_create(:create, ash_opts(socket, api: Vachan.Massmail))
     |> to_form()
   end
 
-  defp update_form(campaign) do
+  defp update_form(socket, campaign) do
     campaign
-    |> AshPhoenix.Form.for_update(:update, api: Vachan.Massmail)
+    |> AshPhoenix.Form.for_update(:update, ash_opts(socket, api: Vachan.Massmail))
     |> to_form()
   end
 
-  defp list_options do
-    List.read_all!()
+  defp list_options(socket) do
+    List.read_all!(ash_opts(socket))
     |> Enum.map(&{&1.name, &1.id})
   end
 

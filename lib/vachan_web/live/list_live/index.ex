@@ -29,7 +29,7 @@ defmodule VachanWeb.ListLive.Index do
   defp apply_action(socket, :edit, %{"id" => id}) do
     socket
     |> assign(:page_title, "Edit List")
-    |> assign(:list, List.get_by_id!(id))
+    |> assign(:list, List.get_by_id!(id, ash_opts(socket)))
   end
 
   defp apply_action(socket, :new, _params) do
@@ -51,8 +51,8 @@ defmodule VachanWeb.ListLive.Index do
 
   @impl true
   def handle_event("delete", %{"id" => id}, socket) do
-    list = List.get_by_id!(id)
-    {:ok, _} = List.destroy(List)
+    list = List.get_by_id!(id, ash_opts(socket))
+    {:ok, _} = List.destroy(list, ash_opts(socket))
 
     {:noreply, stream_delete(socket, :lists, list)}
   end
@@ -85,12 +85,12 @@ defmodule VachanWeb.ListLive.Index do
 
   @impl true
   def handle_event("search", %{"query" => query}, socket) do
-    lists = search_list_by_first_name(query)
+    lists = search_list_by_first_name(query, socket)
     {:noreply, stream(socket, :current_page_list, lists, reset: true)}
   end
 
-  defp search_list_by_first_name(query) when is_binary(query) do
-    {:ok, lists} = List.read_all()
+  defp search_list_by_first_name(query, socket) when is_binary(query) do
+    {:ok, lists} = List.read_all(ash_opts(socket))
     capitalized_query = String.capitalize(query)
 
     matching_list_data =

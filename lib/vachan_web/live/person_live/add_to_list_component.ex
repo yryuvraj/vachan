@@ -59,10 +59,9 @@ defmodule VachanWeb.PersonLive.AddToList do
         %{"person_id" => person_id, "list_id" => list_id},
         socket
       ) do
-    person = Crm.Person.get_by_id!(person_id, ash_opts(socket))
     list = Crm.List.get_by_id!(list_id, ash_opts(socket))
 
-    {:ok, _} = Crm.List.add_person(list, person.id, ash_opts(socket))
+    {:ok, _} = Crm.List.add_person(list, person_id, ash_opts(socket))
 
     {:noreply, socket}
   end
@@ -73,10 +72,9 @@ defmodule VachanWeb.PersonLive.AddToList do
         %{"person_id" => person_id, "list_id" => list_id},
         socket
       ) do
-    person = Crm.Person.get_by_id!(person_id, ash_opts(socket))
     list = Crm.List.get_by_id!(list_id, ash_opts(socket))
 
-    {:ok, _} = Crm.List.remove_person(list, person.id, ash_opts(socket))
+    {:ok, _} = Crm.List.remove_person(list, person_id, ash_opts(socket))
 
     {:noreply, socket}
   end

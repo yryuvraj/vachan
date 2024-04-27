@@ -8,14 +8,14 @@ defmodule VachanWeb.CampaignLive.Index do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, campaigns} = Campaign.read_all()
+    campaigns = Campaign.read_all!(ash_opts(socket))
 
     total_count = length(campaigns)
     initial_page = get_page(campaigns, 1)
 
     {:ok,
      assign(socket,
-       campaigns: Campaign.read_all!(),
+       campaigns: campaigns,
        total_count: total_count,
        page_limit: @page_limit,
        current_page: 1

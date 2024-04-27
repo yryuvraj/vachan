@@ -31,12 +31,14 @@ defmodule VachanWeb.CampaignLive.Show do
 
   @impl true
   def mount(%{"id" => id}, _session, socket) do
-    campaign = Campaign.get_by_id!(id) |> Massmail.load!(:list)
-    messages = []
+    campaign =
+      id
+      |> Campaign.get_by_id!(ash_opts(socket))
+      |> Massmail.load!(:list, ash_opts(socket))
 
     {:ok,
      socket
      |> assign(campaign: campaign)
-     |> assign(messages: messages)}
+     |> assign(messages: [])}
   end
 end
