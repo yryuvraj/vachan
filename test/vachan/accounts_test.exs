@@ -1,5 +1,4 @@
 defmodule Vachan.AccountsTest do
-  alias Swoosh.Email
   use Vachan.DataCase
 
   require Ash.Query

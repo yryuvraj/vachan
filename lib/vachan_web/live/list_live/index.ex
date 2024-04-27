@@ -1,7 +1,6 @@
 defmodule VachanWeb.ListLive.Index do
   use VachanWeb, :live_view
 
-  alias Vachan.Crm
   alias Vachan.Crm.List
 
   @page_limit 10
@@ -57,6 +56,7 @@ defmodule VachanWeb.ListLive.Index do
     {:noreply, stream_delete(socket, :lists, list)}
   end
 
+  @impl true
   def handle_event("next_page", _params, socket) do
     %{current_page: current_page, total_count: total_count, page_limit: page_limit} =
       socket.assigns
@@ -69,6 +69,7 @@ defmodule VachanWeb.ListLive.Index do
      |> stream(:current_page_list, new_page_list, reset: true)}
   end
 
+  @impl true
   def handle_event("prev_page", _params, socket) do
     %{current_page: current_page} = socket.assigns
     new_page = max(current_page - 1, 1)
@@ -79,21 +80,20 @@ defmodule VachanWeb.ListLive.Index do
      |> stream(:current_page_list, new_page_list, reset: true)}
   end
 
-  defp get_page(lists, page) do
-    Enum.slice(lists, ((page - 1) * @page_limit)..(page * @page_limit))
-  end
-
   @impl true
   def handle_event("search", %{"query" => query}, socket) do
     lists = search_list_by_first_name(query, socket)
     {:noreply, stream(socket, :current_page_list, lists, reset: true)}
   end
 
+  defp get_page(lists, page) do
+    Enum.slice(lists, ((page - 1) * @page_limit)..(page * @page_limit))
+  end
+
   defp search_list_by_first_name(query, socket) when is_binary(query) do
     {:ok, lists} = List.read_all(ash_opts(socket))
     capitalized_query = String.capitalize(query)
 
-    matching_list_data =
       Enum.filter(lists, fn list ->
         String.contains?(String.capitalize(list.name), capitalized_query)
       end)

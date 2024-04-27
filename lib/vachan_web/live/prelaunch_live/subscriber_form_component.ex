@@ -3,6 +3,7 @@ defmodule VachanWeb.PrelaunchLive.SubscriberFormComponent do
 
   alias Vachan.Prelaunch
 
+  @impl true
   def render(assigns) do
     ~H"""
     <div>

@@ -75,10 +75,8 @@ defmodule Vachan.Massmail.Workers.SendEmails do
   import Swoosh.Email
 
   alias Vachan.Massmail
-  alias Vachan.Crm
-
   @impl true
-  def perform(%Oban.Job{args: %{"message_id" => message_id} = args}) do
+  def perform(%Oban.Job{args: %{"message_id" => message_id} = _args}) do
     message =
       Massmail.Message.get_by_id!(message_id)
       |> Massmail.load!(:campaign)

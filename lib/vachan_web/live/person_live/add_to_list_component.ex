@@ -36,7 +36,8 @@ defmodule VachanWeb.PersonLive.AddToList do
     """
   end
 
-  def mount(%{"id" => person_id} = params, session, socket) do
+  @impl true
+  def mount(%{"id" => person_id} = _params, _session, socket) do
     if connected?(socket) do
       VachanWeb.Endpoint.subscribe("person_list:created")
       VachanWeb.Endpoint.subscribe("person_list:destroyed")

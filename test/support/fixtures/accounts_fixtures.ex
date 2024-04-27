@@ -5,7 +5,7 @@ defmodule Vachan.AccountsFixtures do
 
   alias AshAuthentication.{Info, Strategy}
   alias Vachan.Accounts.User
-  alias Vachan.Profiles
+  #alias Vachan.Profiles
 
   @valid_attrs %{
     "email" => "test@test",
@@ -24,7 +24,7 @@ defmodule Vachan.AccountsFixtures do
     confirmed_user
   end
 
-  def profiled_user(email \\ "test@test", name \\ "Test Name") do
+  def profiled_user(email \\ "test@test", _name \\ "Test Name") do
     user = confirmed_user(email)
     # create_profile(user, name)
     user

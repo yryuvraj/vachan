@@ -42,7 +42,7 @@ defmodule VachanWeb.ListLive.FormComponent do
   end
 
   @impl true
-  def update(%{list: list, action: :edit} = assigns, socket) do
+  def update(%{list: _list, action: :edit} = assigns, socket) do
     {:ok,
      socket
      |> assign(assigns)
@@ -99,10 +99,6 @@ defmodule VachanWeb.ListLive.FormComponent do
       {:error, form} ->
         {:noreply, assign(socket, form: form)}
     end
-  end
-
-  defp assign_form(socket, %Ecto.Changeset{} = changeset) do
-    assign(socket, :form, to_form(changeset))
   end
 
   defp notify_parent(msg), do: send(self(), {__MODULE__, msg})

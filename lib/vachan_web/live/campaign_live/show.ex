@@ -3,8 +3,8 @@ defmodule VachanWeb.CampaignLive.Show do
 
   alias Vachan.Massmail
   alias Vachan.Massmail.Campaign
-  alias Vachan.Massmail.Message
 
+  @impl true
   def render(assigns) do
     ~H"""
     <div>
