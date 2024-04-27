@@ -109,7 +109,6 @@ defmodule VachanWeb.PersonLive.Index do
   defp page_offset(nil, _page_limit), do: nil
 
   defp page_offset(page_param, page_limit) do
-    IO.inspect((page_param - 1) * page_limit)
     (page_param - 1) * page_limit
   end
 

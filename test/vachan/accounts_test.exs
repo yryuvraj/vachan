@@ -50,7 +50,6 @@ defmodule Vachan.AccountsTest do
 
     test "should not allow invalid email and password" do
       {:error, err} = register(@invalid_attrs)
-      IO.inspect(err)
       assert Enum.count(err.errors) == 3
     end
 

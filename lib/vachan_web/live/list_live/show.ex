@@ -10,8 +10,6 @@ defmodule VachanWeb.ListLive.Show do
 
   @impl true
   def handle_params(%{"id" => id}, _, socket) do
-    IO.inspect(Crm.List.get_by_id!(id, ash_opts(socket)))
-
     {:noreply,
      socket
      |> assign(:page_title, page_title(socket.assigns.live_action))

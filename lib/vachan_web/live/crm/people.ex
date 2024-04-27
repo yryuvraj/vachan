@@ -82,7 +82,6 @@ defmodule VachanWeb.Crm.PersonFormComponent do
   end
 
   def handle_event("save", %{"form" => person_params}, socket) do
-    IO.inspect(socket.assigns)
     save_person(socket, socket.assigns.action, person_params)
   end
 

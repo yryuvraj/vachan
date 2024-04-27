@@ -66,7 +66,6 @@ defmodule VachanWeb.CampaignLive.Edit do
          |> push_navigate(to: socket.assigns.patch)}
 
       {:error, form} ->
-        IO.inspect(form)
         {:noreply, assign(socket, form: form)}
     end
   end
