@@ -36,20 +36,21 @@ defmodule VachanWeb.PersonLive.AddToList do
     """
   end
 
-  def mount(%{"id" => person_id} = params, _session, socket) do
+  def mount(%{"id" => person_id} = params, session, socket) do
     if connected?(socket) do
       VachanWeb.Endpoint.subscribe("person_list:created")
       VachanWeb.Endpoint.subscribe("person_list:destroyed")
     end
 
-    lists = Crm.List.read_all!()
-    person = Crm.Person.get_by_id!(person_id)
+    lists = Crm.List.read_all!(ash_opts(socket))
+    person = Crm.Person.get_by_id!(person_id, ash_opts(socket))
+    person_lists = get_list_ids_for_person(person, socket)
 
     {:ok,
      socket
      |> assign(lists: lists)
      |> assign(person: person)
-     |> assign(person_lists: Enum.map(Vachan.Crm.load!(person, :lists).lists, fn x -> x.id end))}
+     |> assign(:person_lists, person_lists)}
   end
 
   @impl true
@@ -58,10 +59,10 @@ defmodule VachanWeb.PersonLive.AddToList do
         %{"person_id" => person_id, "list_id" => list_id},
         socket
       ) do
-    person = Crm.Person.get_by_id!(person_id)
-    list = Crm.List.get_by_id!(list_id)
+    person = Crm.Person.get_by_id!(person_id, ash_opts(socket))
+    list = Crm.List.get_by_id!(list_id, ash_opts(socket))
 
-    {:ok, _} = Crm.List.add_person(list, person.id)
+    {:ok, _} = Crm.List.add_person(list, person.id, ash_opts(socket))
 
     {:noreply, socket}
   end
@@ -72,31 +73,36 @@ defmodule VachanWeb.PersonLive.AddToList do
         %{"person_id" => person_id, "list_id" => list_id},
         socket
       ) do
-    person = Crm.Person.get_by_id!(person_id)
-    list = Crm.List.get_by_id!(list_id)
+    person = Crm.Person.get_by_id!(person_id, ash_opts(socket))
+    list = Crm.List.get_by_id!(list_id, ash_opts(socket))
 
-    {:ok, _} = Crm.List.remove_person(list, person.id)
+    {:ok, _} = Crm.List.remove_person(list, person.id, ash_opts(socket))
 
     {:noreply, socket}
   end
 
-  defp handle_modification(socket) do
-    person = socket.assigns.person
-
-    {:noreply,
-     socket
-     |> assign(person_lists: Enum.map(Vachan.Crm.load!(person, :lists).lists, fn x -> x.id end))}
-  end
-
   @impl true
   def handle_info(%{topic: "person_list:created", payload: _payload}, socket) do
-    IO.inspect("here>>>person_list:created")
     handle_modification(socket)
   end
 
   @impl true
   def handle_info(%{topic: "person_list:destroyed", payload: _payload}, socket) do
-    IO.inspect("here>>>person_list:deleted")
     handle_modification(socket)
+  end
+
+  defp handle_modification(socket) do
+    person_lists = get_list_ids_for_person(socket.assigns.person, socket)
+
+    {:noreply,
+     socket
+     |> assign(:person_lists, person_lists)}
+  end
+
+  defp get_list_ids_for_person(person, socket) do
+    person
+    |> Vachan.Crm.load!(:lists, ash_opts(socket))
+    |> then(fn x -> x.lists end)
+    |> Enum.map(fn x -> x.id end)
   end
 end
