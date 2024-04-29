@@ -1,6 +1,4 @@
 defmodule VachanWeb.PersonLive.Index do
-  import Ash.Page.Offset
-
   use VachanWeb, :live_view
 
   alias Vachan.Crm.Person
@@ -70,13 +68,8 @@ defmodule VachanWeb.PersonLive.Index do
   end
 
   @impl true
-  def handle_event("add_to_list", %{"id" => id}, socket) do
+  def handle_event("add_to_list", %{"id" => _id}, socket) do
     {:noreply, socket}
-  end
-
-  defp list_people(socket) do
-    page_count = [limit: socket.assigns.page_limit, offset: socket.assigns.page_offset]
-    Person.list!(ash_opts(socket, page: page_count))
   end
 
   @impl true
@@ -88,6 +81,11 @@ defmodule VachanWeb.PersonLive.Index do
     else
       {:noreply, stream(socket, :people, people, reset: true)}
     end
+  end
+
+  defp list_people(socket) do
+    page_count = [limit: socket.assigns.page_limit, offset: socket.assigns.page_offset]
+    Person.list!(ash_opts(socket, page: page_count))
   end
 
   defp search_people_by_first_name(query, socket) when is_binary(query) do

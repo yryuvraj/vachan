@@ -31,6 +31,7 @@ defmodule VachanWeb.ProfileLive.Profile do
     """
   end
 
+  @impl true
   def mount(_params, _session, socket) do
     user = socket.assigns.current_user
 
@@ -43,11 +44,13 @@ defmodule VachanWeb.ProfileLive.Profile do
     {:ok, socket}
   end
 
+  @impl true
   def handle_event("validate", %{"form" => params}, socket) do
     form = AshPhoenix.Form.validate(socket.assigns.form, params)
     {:noreply, assign(socket, form: form)}
   end
 
+  @impl true
   def handle_event("save", %{"form" => params}, socket) do
     params = Map.put(params, "id", socket.assigns.current_user.id)
     form = AshPhoenix.Form.validate(socket.assigns.form, params)

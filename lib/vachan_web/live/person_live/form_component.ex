@@ -44,7 +44,7 @@ defmodule VachanWeb.PersonLive.FormComponent do
   end
 
   @impl true
-  def update(%{person: person, action: :edit} = assigns, socket) do
+  def update(%{person: _person, action: :edit} = assigns, socket) do
     {:ok,
      socket
      |> assign(assigns)
@@ -102,10 +102,6 @@ defmodule VachanWeb.PersonLive.FormComponent do
       {:error, form} ->
         {:noreply, assign(socket, form: form)}
     end
-  end
-
-  defp assign_form(socket, %Ecto.Changeset{} = changeset) do
-    assign(socket, :form, to_form(changeset))
   end
 
   defp notify_parent(msg), do: send(self(), {__MODULE__, msg})

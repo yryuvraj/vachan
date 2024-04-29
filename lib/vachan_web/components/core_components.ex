@@ -503,7 +503,7 @@ defmodule VachanWeb.CoreComponents do
             class="bg-customBackground border-b dark:bg-gray-800 border-zinc-200 text-black	dark:border-gray-700 hover:bg-customBackground_hover dark:hover:bg-gray-600"
           >
             <td
-              :for={{col, i} <- Enum.with_index(@col)}
+              :for={{col, _i} <- Enum.with_index(@col)}
               phx-click={@row_click && @row_click.(row)}
               class={["relative px-8 py-2", @row_click && "hover:cursor-pointer"]}
             >
