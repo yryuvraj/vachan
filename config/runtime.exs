@@ -115,6 +115,8 @@ if config_env() == :prod do
   #
   # See https://hexdocs.pm/swoosh/Swoosh.html#module-installation for details.
 
+  config :swoosh, :ssl_options, cacerts: :certifi.cacerts()
+
   config :vachan, Vachan.Mailer,
     adapter: Swoosh.Adapters.SMTP,
     relay: System.get_env("EMAIL_SMTP_HOST"),
