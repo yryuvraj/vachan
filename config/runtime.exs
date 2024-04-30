@@ -115,7 +115,7 @@ if config_env() == :prod do
   #
   # See https://hexdocs.pm/swoosh/Swoosh.html#module-installation for details.
 
-  config :vacahn, Vachan.Mailer,
+  config :vachan, Vachan.Mailer,
     adapter: Swoosh.Adapters.SMTP,
     relay: System.get_env("EMAIL_SMTP_HOST"),
     username: System.get_env("EMAIL_SMTP_USER"),
