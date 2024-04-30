@@ -21,7 +21,8 @@ jobs:
       - name: Check for  password
         uses: AlicanAkkus/pinder-action@0.1
 
-  build_and_test:
+  test:
+    needs: [password_check]
     runs-on: ubuntu-latest
 
     services:
@@ -70,6 +71,7 @@ jobs:
         run: mix test
 
   deploy:
+    needs: [password_check, test]
     name: Deploy app
     runs-on: ubuntu-latest
     concurrency: deploy-group # optional: ensure only one action runs at a time
