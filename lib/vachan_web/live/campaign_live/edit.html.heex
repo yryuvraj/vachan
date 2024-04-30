@@ -21,6 +21,35 @@
         >
         </.input>
 
+        <%= if @live_action==:edit do %>
+          <.input
+            label="Sender Profile"
+            field={@form[:sender_profile_id]}
+            type="select"
+            options={@sender_profile_options}
+            value={@campaign.sender_profile_id}
+          >
+          </.input>
+          <.input
+            label="List"
+            field={@form[:list_id]}
+            type="select"
+            options={@list_options}
+            value={@campaign.list_id}
+          >
+          </.input>
+        <% else %>
+          <.input
+            label="Sender Profile"
+            field={@form[:sender_profile_id]}
+            type="select"
+            options={@sender_profile_options}
+          >
+          </.input>
+          <.input field={@form[:list_id]} type="select" label="List" options={@list_options}>
+          </.input>
+        <% end %>
+
         <div class="col-span-2">
           <.input
             field={@form[:text_body]}
@@ -30,35 +59,6 @@
           >
           </.input>
         </div>
-
-        <%= if @live_action==:edit do %>
-          <.input
-            field={@form[:sender_profile_id]}
-            type="select"
-            options={@sender_profile_options}
-            value={@campaign.sender_profile_id}
-          >
-          </.input>
-        <% else %>
-          <.input
-            field={@form[:sender_profile_id]}
-            type="select"
-            options={@sender_profile_options}
-          >
-          </.input>
-        <% end %>
-
-        <%= if @live_action==:edit do %>
-          <.input
-            field={@form[:list_id]}
-            type="select"
-            options={@list_options}
-            value={@campaign.list_id}
-          >
-          </.input>
-        <% else %>
-          <.input field={@form[:list_id]} type="select" options={@list_options}></.input>
-        <% end %>
       </div>
 
       <:actions>
