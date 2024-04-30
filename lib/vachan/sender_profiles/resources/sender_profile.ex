@@ -66,6 +66,10 @@ defmodule Vachan.SenderProfiles.SenderProfile do
     attribute :title, :string, allow_nil?: false
   end
 
+  identities do
+    identity :unique_name, [:title]
+  end
+
   relationships do
     has_many :campaigns, Vachan.Massmail.Campaign do
       api Vachan.Massmail
