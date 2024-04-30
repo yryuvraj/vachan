@@ -114,4 +114,27 @@ if config_env() == :prod do
   #     config :swoosh, :api_client, Swoosh.ApiClient.Hackney
   #
   # See https://hexdocs.pm/swoosh/Swoosh.html#module-installation for details.
+
+  config :vacahn, Vachan.Mailer,
+    adapter: Swoosh.Adapters.SMTP,
+    relay: System.get_env("EMAIL_SMTP_HOST"),
+    username: System.get_env("EMAIL_SMTP_USER"),
+    password: System.get_env("EMAIL_SMTP_PASSWORD"),
+    port: String.to_integer(System.get_env("EMAIL_SMTP_PORT") || "465"),
+    ssl: true,
+    tls: :never,
+    auth: :always,
+    retries: 2,
+    no_mx_lookups: false
+
+  # sockopts: [
+  #   versions: [:"tlsv1.2", :"tlsv1.3"],
+  #   verify: :verify_peer,
+  #   cacerts: :public_key.cacerts_get(),
+  #   depth: 3,
+  #   customize_hostname_check: [
+  #     match_fun: :public_key.pkix_verify_hostname_match_fun(:https)
+  #   ],
+  #   server_name_indication: 'mail.privateemail.com'
+  # ]
 end
