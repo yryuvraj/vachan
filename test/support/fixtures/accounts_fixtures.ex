@@ -5,7 +5,7 @@ defmodule Vachan.AccountsFixtures do
 
   alias AshAuthentication.{Info, Strategy}
   alias Vachan.Accounts.User
-  #alias Vachan.Profiles
+  # alias Vachan.Profiles
 
   @valid_attrs %{
     "email" => "test@test",

@@ -8,8 +8,8 @@ defmodule Vachan.Massmail.Workers.EnqueueEmails do
   @impl true
   def perform(%Oban.Job{args: %{"campaign_id" => campaign_id} = _args}) do
     campaign =
-      Massmail.Campaign.get_by_id!(campaign_id, authorize?: false, actor: nil)
-      |> Massmail.load!(:list, authorize?: false, actor: nil)
+      Massmail.Campaign.get_by_id!(campaign_id, actor: nil, authorize?: false)
+      |> Massmail.load!(:list, actor: nil, authorize?: false)
 
     recepients = Crm.load!(campaign.list, :people, authorize?: false, actor: nil)
 
@@ -42,8 +42,8 @@ defmodule Vachan.Massmail.Workers.HydrateEmails do
   def perform(%Oban.Job{
         args: %{"campaign_id" => campaign_id, "recepient_id" => recepient_id} = _args
       }) do
-    campaign = Massmail.Campaign.get_by_id!(campaign_id, authorize?: false, actor: nil)
-    recepient = Crm.Person.get_by_id!(recepient_id, authorize?: false, actor: nil)
+    campaign = Massmail.Campaign.get_by_id!(campaign_id, actor: nil, authorize?: false)
+    recepient = Crm.Person.get_by_id!(recepient_id, actor: nil, authorize?: false)
 
     body = EEx.eval_string(campaign.text_body, person: recepient)
     subject = EEx.eval_string(campaign.subject, person: recepient)
@@ -57,8 +57,8 @@ defmodule Vachan.Massmail.Workers.HydrateEmails do
           subject: subject,
           body: body
         },
-        authorize?: false,
-        actor: nil
+        actor: nil,
+        authorize?: false
       )
 
     Oban.Job.new(
@@ -102,16 +102,15 @@ defmodule Vachan.Massmail.Workers.SendEmails do
       relay: sender_profile.smtp_host,
       port: sender_profile.smtp_port,
       username: sender_profile.username,
-      password: sender_profile.password,
-      tls: :always
+      password: sender_profile.password
     ]
 
     case Swoosh.Adapters.SMTP.deliver(email, config) do
       {:ok, _} ->
-        Massmail.Message.update!(message, %{status: :sent}, authorize?: false, actor: nil)
+        Massmail.Message.update!(message, %{status: :sent}, actor: nil, authorize?: false)
 
       {:error, _} ->
-        Massmail.Message.update!(message, %{status: :failed}, authorize?: false, actor: nil)
+        Massmail.Message.update!(message, %{status: :failed}, actor: nil, authorize?: false)
     end
   end
 end

@@ -22,6 +22,10 @@
       <.link navigate={~p"/campaigns/#{campaign}"}>Show</.link>
     </div>
     <.link patch={~p"/campaigns/#{campaign}/edit"}>Edit</.link>
+    |
+    <.link phx-click={JS.push("run", value: %{id: campaign.id})}>
+      Run Campaign
+    </.link>
   </:action>
 </.table>
 <%= if @pages > 1 do %>

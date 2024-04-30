@@ -33,6 +33,16 @@ defmodule VachanWeb.CampaignLive.Index do
     |> assign(:pages, ceil(page.count / socket.assigns.page_limit))
   end
 
+  def handle_event("run", %{"id" => id}, socket) do
+    Oban.Job.new(%{campaign_id: id},
+      queue: :enqueue_emails,
+      worker: Vachan.Massmail.Workers.EnqueueEmails
+    )
+    |> Oban.insert!()
+
+    {:noreply, socket}
+  end
+
   @impl true
   def handle_event("search", %{"query" => query}, socket) do
     campaigns = search_campaign_name(query, socket)
