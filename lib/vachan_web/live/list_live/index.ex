@@ -56,7 +56,7 @@ defmodule VachanWeb.ListLive.Index do
   @impl true
   def handle_event("delete", %{"id" => id}, socket) do
     list = List.get_by_id!(id, ash_opts(socket))
-    {:ok, _} = List.destroy(list, ash_opts(socket))
+    List.destroy(list, ash_opts(socket))
 
     {:noreply, stream_delete(socket, :lists, list)}
   end

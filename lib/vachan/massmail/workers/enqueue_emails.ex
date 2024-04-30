@@ -8,10 +8,10 @@ defmodule Vachan.Massmail.Workers.EnqueueEmails do
   @impl true
   def perform(%Oban.Job{args: %{"campaign_id" => campaign_id} = _args}) do
     campaign =
-      Massmail.Campaign.get_by_id!(campaign_id)
-      |> Massmail.load!(:list)
+      Massmail.Campaign.get_by_id!(campaign_id, authorize?: false, actor: nil)
+      |> Massmail.load!(:list, authorize?: false, actor: nil)
 
-    recepients = Crm.load!(campaign.list, :people)
+    recepients = Crm.load!(campaign.list, :people, authorize?: false, actor: nil)
 
     recepients.people
     |> Enum.map(
@@ -42,20 +42,24 @@ defmodule Vachan.Massmail.Workers.HydrateEmails do
   def perform(%Oban.Job{
         args: %{"campaign_id" => campaign_id, "recepient_id" => recepient_id} = _args
       }) do
-    campaign = Massmail.Campaign.get_by_id!(campaign_id)
-    recepient = Crm.Person.get_by_id!(recepient_id)
+    campaign = Massmail.Campaign.get_by_id!(campaign_id, authorize?: false, actor: nil)
+    recepient = Crm.Person.get_by_id!(recepient_id, authorize?: false, actor: nil)
 
     body = EEx.eval_string(campaign.text_body, person: recepient)
     subject = EEx.eval_string(campaign.subject, person: recepient)
 
     message =
-      Massmail.Message.create!(%{
-        campaign_id: campaign.id,
-        recepient_id: recepient.id,
-        status: :queued,
-        subject: subject,
-        body: body
-      })
+      Massmail.Message.create!(
+        %{
+          campaign_id: campaign.id,
+          recepient_id: recepient.id,
+          status: :queued,
+          subject: subject,
+          body: body
+        },
+        authorize?: false,
+        actor: nil
+      )
 
     Oban.Job.new(
       %{message_id: message.id},
@@ -78,24 +82,36 @@ defmodule Vachan.Massmail.Workers.SendEmails do
   @impl true
   def perform(%Oban.Job{args: %{"message_id" => message_id} = _args}) do
     message =
-      Massmail.Message.get_by_id!(message_id)
-      |> Massmail.load!(:campaign)
-      |> Massmail.load!(:recepient)
+      Massmail.Message.get_by_id!(message_id, authorize?: false, actor: nil)
+      |> Massmail.load!(:campaign, authorize?: false, actor: nil)
+      |> Massmail.load!(:recepient, authorize?: false, actor: nil)
 
-    campaign = message.campaign
+    campaign = message.campaign |> Massmail.load!(:sender_profile, authorize?: false, actor: nil)
     recepient = message.recepient
+    sender_profile = campaign.sender_profile
 
     email =
       new()
-      |> from({campaign.sender_name, campaign.sender_email})
+      |> from({sender_profile.name, sender_profile.email})
       |> to({recepient.first_name <> " " <> recepient.last_name, recepient.email |> to_string})
       |> subject(message.subject)
       |> html_body(message.body)
       |> text_body(message.body)
 
-    case Vachan.Mailer.deliver(email) do
-      {:ok, _} -> Massmail.Message.update!(message, %{status: :sent})
-      {:error, _} -> Massmail.Message.update!(message, %{status: :failed})
+    config = [
+      relay: sender_profile.smtp_host,
+      port: sender_profile.smtp_port,
+      username: sender_profile.username,
+      password: sender_profile.password,
+      tls: :always
+    ]
+
+    case Swoosh.Adapters.SMTP.deliver(email, config) do
+      {:ok, _} ->
+        Massmail.Message.update!(message, %{status: :sent}, authorize?: false, actor: nil)
+
+      {:error, _} ->
+        Massmail.Message.update!(message, %{status: :failed}, authorize?: false, actor: nil)
     end
   end
 end

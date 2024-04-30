@@ -10,6 +10,11 @@ defmodule Vachan.Crm.PersonList do
   postgres do
     table "crm_people_lists"
     repo Vachan.Repo
+
+    references do
+      reference :person, on_delete: :delete
+      reference :list, on_delete: :delete
+    end
   end
 
   relationships do
