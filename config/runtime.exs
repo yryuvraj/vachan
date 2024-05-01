@@ -124,7 +124,7 @@ if config_env() == :prod do
     password: System.get_env("EMAIL_SMTP_PASSWORD"),
     port: String.to_integer(System.get_env("EMAIL_SMTP_PORT") || "587"),
     ssl: false,
-    tls: :never,
+    tls: :always,
     auth: :always,
     retries: 2,
     no_mx_lookups: false,
