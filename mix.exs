@@ -50,7 +50,7 @@ defmodule Vachan.MixProject do
        app: false,
        compile: false,
        depth: 1},
-      {:swoosh, "~> 1.5"},
+      {:swoosh, "~> 1.16.5"},
       {:finch, "~> 0.16"},
       {:telemetry_metrics, "~> 0.6"},
       {:telemetry_poller, "~> 1.0"},
@@ -62,10 +62,11 @@ defmodule Vachan.MixProject do
       {:ash, "~> 2.18"},
       {:ash_postgres, "~> 1.4"},
       {:ash_authentication, "~> 3.12"},
-      {:ash_authentication_phoenix, "~> 1.9"},
+      {:ash_authentication_phoenix, "~> 1.9.4"},
       {:oban, "~> 2.17"},
       {:oban_live_dashboard, "~> 0.1.0"},
       {:gen_smtp, "~> 1.2"},
+      {:tls_certificate_check, "~> 1.22"},
       {:certifi, "~> 2.13"}
     ]
   end

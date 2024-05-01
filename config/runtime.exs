@@ -122,21 +122,17 @@ if config_env() == :prod do
     relay: System.get_env("EMAIL_SMTP_HOST"),
     username: System.get_env("EMAIL_SMTP_USER"),
     password: System.get_env("EMAIL_SMTP_PASSWORD"),
-    port: String.to_integer(System.get_env("EMAIL_SMTP_PORT") || "465"),
-    ssl: true,
+    port: String.to_integer(System.get_env("EMAIL_SMTP_PORT") || "587"),
+    ssl: false,
     tls: :never,
     auth: :always,
     retries: 2,
-    no_mx_lookups: false
-
-  # sockopts: [
-  #   versions: [:"tlsv1.2", :"tlsv1.3"],
-  #   verify: :verify_peer,
-  #   cacerts: :public_key.cacerts_get(),
-  #   depth: 3,
-  #   customize_hostname_check: [
-  #     match_fun: :public_key.pkix_verify_hostname_match_fun(:https)
-  #   ],
-  #   server_name_indication: 'mail.privateemail.com'
-  # ]
+    no_mx_lookups: false,
+    tls_options: [
+      versions: [:"tlsv1.3"],
+      verify: :verify_peer,
+      cacerts: :public_key.cacerts_get(),
+      server_name_indication: ~c"mail.essentia.email",
+      depth: 99
+    ]
 end

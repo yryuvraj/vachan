@@ -48,11 +48,9 @@ defmodule Vachan.Accounts.Emails do
     """)
   end
 
-  defp deliver(to, subject, body) do
-    IO.puts("Sending email to #{to} with subject #{subject} and body #{body}")
-
+  def deliver(to, subject, body) do
     new()
-    |> from({"Vaaak", "Vaaak@vaaak.com"})
+    |> from({"Vaaak", "vaaak@essentia.email"})
     |> to(to_string(to))
     |> subject(subject)
     |> put_provider_option(:track_links, "None")
