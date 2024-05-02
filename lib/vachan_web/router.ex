@@ -74,6 +74,8 @@ defmodule VachanWeb.Router do
       live "/sender-profiles/:id/edit", SenderProfileLive.Index, :edit
       live "/sender-profiles/:id", SenderProfileLive.Show, :show
       live "/sender-profiles/:id/show/edit", SenderProfileLive.Show, :edit
+
+      live "/wizard", CampaignWizard.CampaignWizard
     end
   end
 
