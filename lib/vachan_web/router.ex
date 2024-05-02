@@ -1,4 +1,4 @@
-import VachanWeb.AuthOverrides          
+import VachanWeb.AuthOverrides
 
 defmodule VachanWeb.Router do
   use VachanWeb, :router
@@ -28,9 +28,13 @@ defmodule VachanWeb.Router do
     live "/verify-email", VerifyEmailLive
     # Leave out `register_path` and `reset_path` if you don't want to support
     # user registration and/or password resets respectively.
-    #sign_in_route(register_path: "/register", reset_path: "/reset")
+    # sign_in_route(register_path: "/register", reset_path: "/reset")
     # Define your authentication routes with overrides
-    sign_in_route(register_path: "/register", reset_path: "/reset", overrides: [VachanWeb.AuthOverrides, AshAuthentication.Phoenix.Overrides.Default])
+    sign_in_route(
+      register_path: "/register",
+      reset_path: "/reset",
+      overrides: [VachanWeb.AuthOverrides, AshAuthentication.Phoenix.Overrides.Default]
+    )
 
     sign_out_route AuthController
     auth_routes_for Vachan.Accounts.User, to: AuthController
