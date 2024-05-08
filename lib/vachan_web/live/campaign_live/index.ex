@@ -51,7 +51,7 @@ defmodule VachanWeb.CampaignLive.Index do
 
   defp list_campaigns(socket) do
     page_count = [limit: socket.assigns.page_limit, offset: socket.assigns.page_offset]
-    Campaign.list!(ash_opts(socket, page: page_count))
+    Campaign.read_all!(ash_opts(socket))
   end
 
   defp search_campaign_name(query, socket) when is_binary(query) do
