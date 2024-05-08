@@ -65,10 +65,10 @@ defmodule VachanWeb.ProfileLive.Profile do
             forms: [auto?: true]
           )
 
-        {:noreply, assign(socket, form: form)}
+        {:noreply, assign(socket, form: to_form(form))}
 
       {:error, form} ->
-        {:noreply, assign(socket, form: form)}
+        {:noreply, assign(socket, form: to_form(form))}
     end
   end
 
