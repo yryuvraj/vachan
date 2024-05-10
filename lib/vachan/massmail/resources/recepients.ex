@@ -1,12 +1,12 @@
-defmodule Vachan.Massmail.Content do
+defmodule Vachan.Massmail.Recepients do
   use Ash.Resource, data_layer: AshPostgres.DataLayer
 
   resource do
-    description "Content of a campaign goes here."
+    description "Recepients of a campaign go here."
   end
 
   postgres do
-    table "campaign_content"
+    table "campaign_recepients"
     repo Vachan.Repo
   end
 
@@ -31,14 +31,11 @@ defmodule Vachan.Massmail.Content do
       primary? true
 
       accept [
-        :reply_to_email,
-        :reply_to_name,
-        :subject,
-        :text_body,
-        :campaign_id
+        :blob
       ]
 
-      # change manage_relationship(:campaign_id, :campaign, type: :append)
+      argument :campaign_id, :integer, allow_nil?: false
+      change manage_relationship(:campaign_id, :campaign, type: :append)
     end
 
     read :by_id do
@@ -48,19 +45,9 @@ defmodule Vachan.Massmail.Content do
     end
   end
 
-  @possible_kinds [:plain_text, :rich_text, :mjml]
-
   attributes do
     integer_primary_key :id
-    attribute :reply_to_email, :string, allow_nil?: true
-    attribute :reply_to_name, :string, allow_nil?: true
-
-    attribute :kind, :atom do
-      constraints one_of: @possible_kinds
-    end
-
-    attribute :subject, :string, allow_nil?: false
-    attribute :text_body, :string, allow_nil?: false
+    attribute :blob, :string
   end
 
   relationships do
@@ -71,11 +58,5 @@ defmodule Vachan.Massmail.Content do
     belongs_to :organization, Vachan.Organizations.Organization do
       api Vachan.Organizations
     end
-  end
-
-  validations do
-    validate match(:reply_to_email, ~r/^[^\s]+@[^\s]+$/),
-      on: [:create, :update],
-      message: "Invalid email"
   end
 end

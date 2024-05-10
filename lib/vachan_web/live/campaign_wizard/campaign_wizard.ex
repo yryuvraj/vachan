@@ -15,21 +15,14 @@ defmodule VachanWeb.CampaignWizard.CampaignWizardLive do
   def mount(_params, _session, socket) do
     {:ok, socket |> assign(:step, 1)}
   end
-end
 
-defmodule VachanWeb.CampaignWizard.ContentStep do
-  use VachanWeb, :live_component
-
-  def render(assigns) do
-    ~H"""
-    <div class="mt-20">
-      <textarea> </textarea>
-    </div>
-    """
+  @impl true
+  def handle_params(%{"id" => campaign_id} = unsigned_params, _uri, socket) do
+    {:noreply, socket |> assign(:campaign_id, campaign_id)}
   end
 
   @impl true
-  def update(assigns, socket) do
-    {:ok, socket}
+  def handle_params(_unsigned_params, _uri, socket) do
+    {:noreply, socket}
   end
 end

@@ -29,8 +29,7 @@ defmodule VachanWeb.CampaignLive.Index do
     page = list_campaigns(socket)
 
     socket
-    |> stream(:campaigns, page.results, reset: true)
-    |> assign(:pages, ceil(page.count / socket.assigns.page_limit))
+    |> stream(:campaigns, page, reset: true)
   end
 
   def handle_event("run", %{"id" => id}, socket) do
@@ -50,7 +49,6 @@ defmodule VachanWeb.CampaignLive.Index do
   end
 
   defp list_campaigns(socket) do
-    page_count = [limit: socket.assigns.page_limit, offset: socket.assigns.page_offset]
     Campaign.read_all!(ash_opts(socket))
   end
 

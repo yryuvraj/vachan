@@ -1,11 +1,28 @@
 <div>
   <%= if(@live_action == :new) do %>
-    <.live_component module={VachanWeb.CampaignWizard.NewCampaign} id="new" />
+    <.live_component
+      module={VachanWeb.CampaignWizard.NewCampaign}
+      id="new"
+      current_user={@current_user}
+      current_org={@current_org}
+    />
   <% end %>
   <%= if @live_action == :add_content do %>
-    <.live_component module={VachanWeb.CampaignWizard.ContentStep} id="step1" />
+    <.live_component
+      module={VachanWeb.CampaignWizard.ContentStep}
+      id="add_content"
+      current_user={@current_user}
+      current_org={@current_org}
+      campaign_id={@campaign_id}
+    />
   <% end %>
-
-  <.button phx-click="next-step" class="ml-2">next</.button>
-  <.button phx-click="previous-step" class="ml-2">prev</.button>
+  <%= if @live_action == :add_recepients do %>
+    <.live_component
+      module={VachanWeb.CampaignWizard.AddRecepients}
+      id="add_recepients"
+      current_user={@current_user}
+      current_org={@current_org}
+      campaign_id={@campaign_id}
+    />
+  <% end %>
 </div>

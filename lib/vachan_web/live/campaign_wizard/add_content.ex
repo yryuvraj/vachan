@@ -1,12 +1,13 @@
-defmodule VachanWeb.CampaignWizard.NewCampaign do
+defmodule VachanWeb.CampaignWizard.ContentStep do
   use VachanWeb, :live_component
-  alias Vachan.Massmail.Campaign
 
+  @impl true
   def render(assigns) do
     ~H"""
-    <div class="flex items-center justify-center h-screen">
+    <div class="mt-20">
       <div>
         <.simple_form
+          id="content-form"
           for={@form}
           phx-change="validate"
           phx-submit="save"
@@ -14,15 +15,26 @@ defmodule VachanWeb.CampaignWizard.NewCampaign do
           class="p-4"
         >
           <.input
-            field={@form[:name]}
+            field={@form[:subject]}
             type="text"
-            label="Campaign Name"
-            placeholder="What do you want to call your new campaign?"
+            label="Subject"
+            placeholder="How is {{company}}'s marketing campaign holding up?"
           >
           </.input>
 
+          <.input
+            field={@form[:text_body]}
+            type="textarea"
+            label="Email Body"
+            placeholder="The body of the email"
+          >
+          </.input>
+
+          <.input label="campaign id" field={@form[:campaign_id]} type="text" value={@campaign_id}>
+          </.input>
+
           <:actions>
-            <.button phx-disable-with="Creating ... ">Create Campaign</.button>
+            <.button phx-disable-with="Saving ... ">Save content</.button>
           </:actions>
         </.simple_form>
       </div>
@@ -49,13 +61,13 @@ defmodule VachanWeb.CampaignWizard.NewCampaign do
     form = AshPhoenix.Form.validate(socket.assigns.form, params)
 
     case AshPhoenix.Form.submit(form) do
-      {:ok, campaign} ->
-        notify_parent({:created, campaign})
+      {:ok, content} ->
+        notify_parent({:created, content})
 
         {:noreply,
          socket
-         |> put_flash(:info, "Campaign Created")
-         |> push_patch(to: ~p"/wizard/#{campaign.id}/add-content/")}
+         |> put_flash(:info, "Content Saved")
+         |> push_patch(to: ~p"/wizard/#{socket.assigns.campaign_id}/add-recepients/")}
 
       {:error, form} ->
         IO.inspect(form)
@@ -64,8 +76,11 @@ defmodule VachanWeb.CampaignWizard.NewCampaign do
   end
 
   defp create_form(assigns) do
-    Campaign
-    |> AshPhoenix.Form.for_create(:create, ash_opts(assigns, api: Vachan.Massmail))
+    Vachan.Massmail.Content
+    |> AshPhoenix.Form.for_create(
+      :create,
+      ash_opts(assigns, api: Vachan.Massmail)
+    )
     |> to_form()
   end
 
