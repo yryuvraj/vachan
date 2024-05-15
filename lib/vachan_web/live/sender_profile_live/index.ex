@@ -4,7 +4,7 @@ defmodule VachanWeb.SenderProfileLive.Index do
   alias Vachan.SenderProfiles.SenderProfile
 
   @impl true
-  def mount(params, session, socket) do
+  def mount(_params, _session, socket) do
     {:ok,
      socket
      |> stream(:sender_profiles, [])}

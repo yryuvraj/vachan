@@ -2,6 +2,7 @@ defmodule VachanWeb.CampaignWizard.NewCampaign do
   use VachanWeb, :live_component
   alias Vachan.Massmail.Campaign
 
+  @impl true
   def render(assigns) do
     ~H"""
     <div class="flex items-center justify-center h-screen">

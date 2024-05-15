@@ -12,12 +12,13 @@ defmodule VachanWeb.CampaignWizard.CampaignWizardLive do
   There shall be separate components for every step of the process.
 
   """
+  @impl true
   def mount(_params, _session, socket) do
     {:ok, socket |> assign(:step, 1)}
   end
 
   @impl true
-  def handle_params(%{"id" => campaign_id} = unsigned_params, _uri, socket) do
+  def handle_params(%{"id" => campaign_id} = _unsigned_params, _uri, socket) do
     {:noreply, socket |> assign(:campaign_id, campaign_id)}
   end
 
