@@ -5,39 +5,39 @@ defmodule VachanWeb.CampaignWizard.ContentStep do
   def render(assigns) do
     ~H"""
     <div class="mt-20">
-      <div>
-        <.simple_form
-          id="content-form"
-          for={@form}
-          phx-change="validate"
-          phx-submit="save"
-          phx-target={@myself}
-          class="p-4"
-        >
-          <.input
-            field={@form[:subject]}
-            type="text"
-            label="Subject"
-            placeholder="How is {{company}}'s marketing campaign holding up?"
-          >
-          </.input>
+	<div>
+            <.simple_form
+		id="content-form"
+		for={@form}
+		phx-change="validate"
+		phx-submit="save"
+		phx-target={@myself}
+		class="p-4"
+            >
+		<.input
+		    field={@form[:subject]}
+		    type="text"
+		    label="Subject"
+		    placeholder="How is {{company}}'s marketing campaign holding up?"
+		>
+		</.input>
 
-          <.input
-            field={@form[:text_body]}
-            type="textarea"
-            label="Email Body"
-            placeholder="The body of the email"
-          >
-          </.input>
+		<.input
+		    field={@form[:text_body]}
+		    type="textarea"
+		    label="Email Body"
+		    placeholder="The body of the email"
+		>
+		</.input>
 
-          <.input label="campaign id" field={@form[:campaign_id]} type="text" value={@campaign_id}>
-          </.input>
+		<.input label="campaign id" field={@form[:campaign_id]} type="text" value={@campaign_id}>
+		</.input>
 
-          <:actions>
-            <.button phx-disable-with="Saving ... ">Save content</.button>
-          </:actions>
-        </.simple_form>
-      </div>
+		<:actions>
+		    <.button phx-disable-with="Saving ... ">Save content</.button>
+		</:actions>
+            </.simple_form>
+	</div>
     </div>
     """
   end
@@ -79,7 +79,7 @@ defmodule VachanWeb.CampaignWizard.ContentStep do
     Vachan.Massmail.Content
     |> AshPhoenix.Form.for_create(
       :create,
-      ash_opts(assigns, api: Vachan.Massmail)
+    ash_opts(assigns, api: Vachan.Massmail)
     )
     |> to_form()
   end
