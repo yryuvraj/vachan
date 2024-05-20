@@ -10,8 +10,8 @@ defmodule VachanWeb.CampaignWizard.CampaignWizardLive do
   - step 5: view status updates.
 
   There shall be separate components for every step of the process.
-
   """
+
   @impl true
   def mount(_params, _session, socket) do
     {:ok, socket |> assign(:step, 1)}

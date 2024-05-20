@@ -34,7 +34,7 @@ defmodule VachanWeb.CampaignWizard.AddRecepients do
           </thead>
           <tbody>
             <%= for line <- @parsed_data do %>
-              <tr class="bg-customBackground border-b dark:bg-gray-800 border-zinc-200 text-black	dark:border-gray-700 hover:bg-customBackground_hover dark:hover:bg-gray-600">
+              <tr class="bg-customBackground border-b dark:bg-gray-800 border-zinc-200 text-black dark:border-gray-700 hover:bg-customBackground_hover dark:hover:bg-gray-600">
                 <%= for item <- line do %>
                   <td class="relative px-8 py-2"><%= item %></td>
                 <% end %>
@@ -93,7 +93,7 @@ defmodule VachanWeb.CampaignWizard.AddRecepients do
         {:noreply,
          socket
          |> put_flash(:info, "Content Saved")
-         |> push_patch(to: ~p"/wizard/#{socket.assigns.campaign_id}/add-gateway/")}
+         |> push_patch(to: ~p"/wizard/#{socket.assigns.campaign_id}/add-sender-profile/")}
 
       {:error, form} ->
         IO.inspect(form)

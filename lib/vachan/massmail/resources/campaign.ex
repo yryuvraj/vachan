@@ -14,7 +14,7 @@ defmodule Vachan.Massmail.Campaign do
     transitions do
       transition(:add_content, from: :new, to: :content_added)
       transition(:add_recepients, from: :content_added, to: :recepients_added)
-      transition(:add_sender, from: :recepients_added, to: :sender_added)
+      transition(:add_sender_profile, from: :recepients_added, to: :sender_added)
       transition(:send_test_mail, from: :sender_added, to: :test_mail_sent)
       transition(:start_sending, from: :test_mail_sent, to: :sending_started)
       transition(:error, from: [:sending_started, :new, :sender_added], to: :error)
@@ -38,6 +38,7 @@ defmodule Vachan.Massmail.Campaign do
     define :destroy, action: :destroy
     define :read_all, action: :read
     define :get_by_id, args: [:id], action: :by_id
+    define :add_sender_profile, args: [:sender_profile_id], action: :add_sender_profile
   end
 
   actions do
@@ -79,7 +80,14 @@ defmodule Vachan.Massmail.Campaign do
 
     update :add_content, do: change(transition_state(:content_added))
     update :add_recepients, do: change(transition_state(:recepients_added))
-    update :add_sender, do: change(transition_state(:sender_added))
+
+    update :add_sender_profile do
+      argument :sender_profile_id, :uuid, allow_nil?: false
+
+      change manage_relationship(:sender_profile_id, :sender_profile, type: :append)
+      change(transition_state(:sender_added))
+    end
+
     update :send_test_mail, do: change(transition_state(:test_mail_sent))
     update :start_sending, do: change(transition_state(:sending_started))
     update :error, do: change(transition_state(:error))
