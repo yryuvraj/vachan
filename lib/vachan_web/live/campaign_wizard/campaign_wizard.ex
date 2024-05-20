@@ -12,14 +12,44 @@ defmodule VachanWeb.CampaignWizard.CampaignWizardLive do
   There shall be separate components for every step of the process.
   """
 
+  def wizard_steps(campaign_id) do
+    [
+      %{
+        live_action: :new,
+        module: VachanWeb.CampaignWizard.NewCampaign,
+        next: ~p"/wizard/#{campaign_id}/add-content/"
+      },
+      %{
+        live_action: :add_content,
+        module: VachanWeb.CampaignWizard.ContentStep,
+        next: ~p"/wizard/#{campaign_id}/add-recepients/"
+      },
+      %{
+        live_action: :add_recepients,
+        module: VachanWeb.CampaignWizard.AddRecepients,
+        next: ~p"/wizard/#{campaign_id}/add-sender-profile/"
+      },
+      %{
+        live_action: :add_gateway,
+        module: VachanWeb.CampaignWizard.AddSenderProfile,
+        next: ~p"/wizard/#{campaign_id}/review/"
+      }
+    ]
+  end
+
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, socket |> assign(:step, 1)}
+    {:ok, socket |> assign(:steps, [])}
   end
 
   @impl true
   def handle_params(%{"id" => campaign_id} = _unsigned_params, _uri, socket) do
-    {:noreply, socket |> assign(:campaign_id, campaign_id)}
+    steps = wizard_steps(campaign_id)
+
+    {:noreply,
+     socket
+     |> assign(:campaign_id, campaign_id)
+     |> assign(:steps, steps)}
   end
 
   @impl true
