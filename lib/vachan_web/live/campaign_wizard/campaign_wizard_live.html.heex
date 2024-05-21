@@ -1,5 +1,3 @@
-
-
 <div>
   <%= if(@live_action == :new) do %>
     <.live_component
@@ -10,18 +8,38 @@
     />
   <% end %>
   <%= for step <- @steps do %>
-  <%= if @live_action == step.live_action do %>
+    <%= if @live_action == step.live_action do %>
+      <.live_component
+        module={step.module}
+        id="add_content"
+        current_user={@current_user}
+        current_org={@current_org}
+        campaign_id={@campaign_id}
+        next_step_url={step.next}
+      />
+    <% end %>
+  <% end %>
+
+  <%= if @live_action == :add_gateway do %>
     <.live_component
-      module={step.module}
-      id="add_content"
+      module={VachanWeb.CampaignWizard.AddSenderProfile}
+      id="add_gateway"
       current_user={@current_user}
       current_org={@current_org}
       campaign_id={@campaign_id}
-      next_step_url={step.next}
     />
   <% end %>
-  <% end %>
 
+  <%= if @live_action == :review do %>
+    <.live_component
+      module={VachanWeb.CampaignWizard.Review}
+      id="review"
+      current_user={@current_user}
+      current_org={@current_org}
+      campaign_id={@campaign_id}
+      campaign={@campaign}
+    />
+  <% end %>
 </div>
 <.modal
   :if={@live_action in [:create_sender_profile]}
@@ -32,9 +50,9 @@
   <.live_component
     module={VachanWeb.SenderProfileLive.FormComponent}
     id={:new}
-    title={"Create Sender Profile"}
+    title="Create Sender Profile"
     action={:new}
-    sender_profile={:nil}
+    sender_profile={nil}
     current_user={@current_user}
     current_org={@current_org}
     patch={~p"/wizard/#{@campaign_id}/add-sender-profile"}

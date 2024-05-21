@@ -108,6 +108,7 @@ defmodule Vachan.Massmail.Campaign do
   end
 
   relationships do
+    has_one :recepients, Vachan.Massmail.Recepients
     has_one :content, Vachan.Massmail.Content
     has_many :messages, Vachan.Massmail.Message
 

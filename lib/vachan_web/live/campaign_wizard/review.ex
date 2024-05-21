@@ -9,7 +9,22 @@ defmodule VachanWeb.CampaignWizard.Review do
   def render(assigns) do
     ~H"""
     <div>
-      Review
+      <%= if @campaign do %>
+        <div>
+          <ul>
+            <li><%= @campaign.id %></li>
+            <li><%= @campaign.name %></li>
+            <li><%= @campaign.recepients.id %></li>
+            <li><%= @campaign.content.subject %></li>
+            <li><%= @campaign.content.text_body %></li>
+          </ul>
+        </div>
+        <div>
+          <.button phx-click="send_mails">Send Mails</.button>
+        </div>
+      <% else %>
+        hahahah
+      <% end %>
     </div>
     """
   end

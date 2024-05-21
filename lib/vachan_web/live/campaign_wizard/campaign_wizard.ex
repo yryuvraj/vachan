@@ -39,21 +39,41 @@ defmodule VachanWeb.CampaignWizard.CampaignWizardLive do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, socket |> assign(:steps, [])}
+    {:ok,
+     socket
+     |> assign(:steps, [])
+     |> assign(:campaign, nil)}
   end
 
   @impl true
-  def handle_params(%{"id" => campaign_id} = _unsigned_params, _uri, socket) do
+  def handle_params(%{"id" => campaign_id} = params, _uri, socket) do
     steps = wizard_steps(campaign_id)
 
     {:noreply,
      socket
      |> assign(:campaign_id, campaign_id)
-     |> assign(:steps, steps)}
+     |> assign(:steps, steps)
+     |> apply_action(socket.assigns.live_action, params)}
   end
 
   @impl true
   def handle_params(_unsigned_params, _uri, socket) do
     {:noreply, socket}
+  end
+
+  defp apply_action(socket, :review, _) do
+    socket
+    |> assign(:campaign, get_campaign(socket))
+  end
+
+  defp apply_action(socket, _, _) do
+    socket
+  end
+
+  def get_campaign(socket) do
+    Vachan.Massmail.Campaign.get_by_id!(socket.assigns.campaign_id, ash_opts(socket))
+    |> Vachan.Massmail.load!(:sender_profile, ash_opts(socket))
+    |> Vachan.Massmail.load!(:content, ash_opts(socket))
+    |> Vachan.Massmail.load!(:recepients, ash_opts(socket))
   end
 end
