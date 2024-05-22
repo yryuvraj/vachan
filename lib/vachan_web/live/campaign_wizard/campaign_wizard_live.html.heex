@@ -16,29 +16,9 @@
         current_org={@current_org}
         campaign_id={@campaign_id}
         next_step_url={step.next}
+        campaign={@campaign}
       />
     <% end %>
-  <% end %>
-
-  <%= if @live_action == :add_gateway do %>
-    <.live_component
-      module={VachanWeb.CampaignWizard.AddSenderProfile}
-      id="add_gateway"
-      current_user={@current_user}
-      current_org={@current_org}
-      campaign_id={@campaign_id}
-    />
-  <% end %>
-
-  <%= if @live_action == :review do %>
-    <.live_component
-      module={VachanWeb.CampaignWizard.Review}
-      id="review"
-      current_user={@current_user}
-      current_org={@current_org}
-      campaign_id={@campaign_id}
-      campaign={@campaign}
-    />
   <% end %>
 </div>
 <.modal

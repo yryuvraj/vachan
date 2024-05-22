@@ -30,9 +30,14 @@ defmodule VachanWeb.CampaignWizard.CampaignWizardLive do
         next: ~p"/wizard/#{campaign_id}/add-sender-profile/"
       },
       %{
-        live_action: :add_gateway,
+        live_action: :add_sender_profile,
         module: VachanWeb.CampaignWizard.AddSenderProfile,
         next: ~p"/wizard/#{campaign_id}/review/"
+      },
+      %{
+        live_action: :review,
+        module: VachanWeb.CampaignWizard.Review,
+        next: ~p"/campaigns/#{campaign_id}/show/"
       }
     ]
   end
