@@ -14,8 +14,8 @@ defmodule VachanWeb.CampaignWizard.AddRecepients do
           type="textarea"
         >
         </.input>
-        <.input label="campaign id" field={@form[:campaign_id]} type="hidden" value={@campaign_id}>
-        </.input>
+        <.input field={@form[:campaign_id]} type="hidden" value={@campaign.id}></.input>
+
         <:actions>
           <.button phx-disable-with="Saving ... ">Save content</.button>
         </:actions>
@@ -88,12 +88,14 @@ defmodule VachanWeb.CampaignWizard.AddRecepients do
 
     case AshPhoenix.Form.submit(form) do
       {:ok, recepients} ->
-        notify_parent({:created, recepients})
+        notify_parent({:success, recepients})
 
-        {:noreply,
-         socket
-         |> put_flash(:info, "Content Saved")
-         |> push_patch(to: ~p"/wizard/#{socket.assigns.campaign_id}/add-sender-profile/")}
+        {
+          :noreply,
+          socket
+          |> put_flash(:info, "Content Saved")
+          |> push_patch(to: socket.assigns.next_f.(socket.assigns.campaign.id))
+        }
 
       {:error, form} ->
         IO.inspect(form)

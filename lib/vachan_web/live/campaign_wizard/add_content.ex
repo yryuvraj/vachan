@@ -30,8 +30,7 @@ defmodule VachanWeb.CampaignWizard.ContentStep do
           >
           </.input>
 
-          <.input label="campaign id" field={@form[:campaign_id]} type="text" value={@campaign_id}>
-          </.input>
+          <.input field={@form[:campaign_id]} type="hidden" value={@campaign.id}></.input>
 
           <:actions>
             <.button phx-disable-with="Saving ... ">Save content</.button>
@@ -62,12 +61,12 @@ defmodule VachanWeb.CampaignWizard.ContentStep do
 
     case AshPhoenix.Form.submit(form) do
       {:ok, content} ->
-        notify_parent({:created, content})
+        # notify_parent({:content, content})
 
         {:noreply,
          socket
          |> put_flash(:info, "Content Saved")
-         |> push_patch(to: ~p"/wizard/#{socket.assigns.campaign_id}/add-recepients/")}
+         |> push_patch(to: socket.assigns.next_f.(socket.assigns.campaign.id))}
 
       {:error, form} ->
         IO.inspect(form)

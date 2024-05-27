@@ -76,7 +76,11 @@ defmodule VachanWeb.Router do
       live "/wizard", CampaignWizard.CampaignWizardLive, :new
       live "/wizard/:id/add-content", CampaignWizard.CampaignWizardLive, :add_content
       live "/wizard/:id/add-recepients", CampaignWizard.CampaignWizardLive, :add_recepients
-      live "/wizard/:id/add-sender-profile", CampaignWizard.CampaignWizardLive, :add_sender_profile
+
+      live "/wizard/:id/add-sender-profile",
+           CampaignWizard.CampaignWizardLive,
+           :add_sender_profile
+
       live "/wizard/:id/review", CampaignWizard.CampaignWizardLive, :review
 
       live "/wizard/:id/add-sender-profile/create",

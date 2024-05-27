@@ -12,71 +12,73 @@ defmodule VachanWeb.CampaignWizard.CampaignWizardLive do
   There shall be separate components for every step of the process.
   """
 
-  def wizard_steps(campaign_id) do
-    [
-      %{
-        live_action: :new,
-        module: VachanWeb.CampaignWizard.NewCampaign,
-        next: ~p"/wizard/#{campaign_id}/add-content/"
-      },
-      %{
-        live_action: :add_content,
-        module: VachanWeb.CampaignWizard.ContentStep,
-        next: ~p"/wizard/#{campaign_id}/add-recepients/"
-      },
-      %{
-        live_action: :add_recepients,
-        module: VachanWeb.CampaignWizard.AddRecepients,
-        next: ~p"/wizard/#{campaign_id}/add-sender-profile/"
-      },
-      %{
-        live_action: :add_sender_profile,
-        module: VachanWeb.CampaignWizard.AddSenderProfile,
-        next: ~p"/wizard/#{campaign_id}/review/"
-      },
-      %{
-        live_action: :review,
-        module: VachanWeb.CampaignWizard.Review,
-        next: ~p"/campaigns/#{campaign_id}/show/"
-      }
-    ]
-  end
-
   @impl true
   def mount(_params, _session, socket) do
     {:ok,
      socket
-     |> assign(:steps, [])
-     |> assign(:campaign, nil)}
+     |> assign(:campaign, nil)
+     |> assign(:campaign_id, nil)}
   end
 
   @impl true
-  def handle_params(%{"id" => campaign_id} = params, _uri, socket) do
-    steps = wizard_steps(campaign_id)
-
-    {:noreply,
-     socket
-     |> assign(:campaign_id, campaign_id)
-     |> assign(:steps, steps)
-     |> apply_action(socket.assigns.live_action, params)}
+  def handle_params(params, _uri, socket) do
+    {:noreply, apply_action(socket, socket.assigns.live_action, params)}
   end
 
   @impl true
-  def handle_params(_unsigned_params, _uri, socket) do
+  def handle_info({_sender, {:message, object}}, socket) do
     {:noreply, socket}
   end
 
-  defp apply_action(socket, :review, _) do
-    socket
-    |> assign(:campaign, get_campaign(socket))
+  defp wizard_steps do
+    [
+      %{
+        live_action: :new,
+        module: VachanWeb.CampaignWizard.NewCampaign,
+        next: fn campaign_id -> "/wizard/#{campaign_id}/add-content/" end
+      },
+      %{
+        live_action: :add_content,
+        module: VachanWeb.CampaignWizard.ContentStep,
+        next: fn campaign_id -> "/wizard/#{campaign_id}/add-recepients/" end
+      },
+      %{
+        live_action: :add_recepients,
+        module: VachanWeb.CampaignWizard.AddRecepients,
+        next: fn campaign_id -> "/wizard/#{campaign_id}/add-sender-profile/" end
+      },
+      %{
+        live_action: :add_sender_profile,
+        module: VachanWeb.CampaignWizard.AddSenderProfile,
+        next: fn campaign_id -> "/wizard/#{campaign_id}/review/" end
+      },
+      %{
+        live_action: :review,
+        module: VachanWeb.CampaignWizard.Review,
+        next: fn campaign_id -> "/campaigns/#{campaign_id}/show/" end
+      }
+    ]
   end
 
-  defp apply_action(socket, _, _) do
-    socket
+  defp apply_action(socket, :new, _params) do
+    socket |> assign(:current_step, get_current_step(:new))
   end
 
-  def get_campaign(socket) do
-    Vachan.Massmail.Campaign.get_by_id!(socket.assigns.campaign_id, ash_opts(socket))
+  defp apply_action(socket, live_action, %{"id" => campaign_id} = _params) do
+    socket
+    |> assign(:current_step, get_current_step(live_action))
+    |> assign(:campaign, get_campaign(socket, campaign_id))
+    |> assign(:campaign_id, campaign_id)
+  end
+
+  defp get_current_step(live_action) do
+    wizard_steps()
+    |> Enum.filter(fn x -> x.live_action == live_action end)
+    |> hd
+  end
+
+  defp get_campaign(socket, campaign_id) do
+    Vachan.Massmail.Campaign.get_by_id!(campaign_id, ash_opts(socket))
     |> Vachan.Massmail.load!(:sender_profile, ash_opts(socket))
     |> Vachan.Massmail.load!(:content, ash_opts(socket))
     |> Vachan.Massmail.load!(:recepients, ash_opts(socket))

@@ -51,12 +51,15 @@ defmodule VachanWeb.CampaignWizard.NewCampaign do
 
     case AshPhoenix.Form.submit(form) do
       {:ok, campaign} ->
-        notify_parent({:created, campaign})
+        notify_parent({:campaign_created, campaign})
+        # notify_parent({:success, campaign})
 
-        {:noreply,
-         socket
-         |> put_flash(:info, "Campaign Created")
-         |> push_patch(to: ~p"/wizard/#{campaign.id}/add-content/")}
+        {
+          :noreply,
+          socket
+          |> put_flash(:info, "Campaign Created")
+          |> push_patch(to: socket.assigns.next_f.(campaign.id))
+        }
 
       {:error, form} ->
         IO.inspect(form)

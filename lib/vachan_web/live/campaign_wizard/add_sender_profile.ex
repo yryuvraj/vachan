@@ -15,7 +15,7 @@ defmodule VachanWeb.CampaignWizard.AddSenderProfile do
       <.header>
         Choose a Sender Profile
         <:subtitle>
-          Or <.link patch={~p"/wizard/#{@campaign_id}/add-sender-profile/create"}> create one </.link>
+          Or <.link patch={~p"/wizard/#{@campaign.id}/add-sender-profile/create"}> create one </.link>
         </:subtitle>
       </.header>
       <.table id="sender_profiles" rows={@sender_profiles}>
@@ -26,7 +26,7 @@ defmodule VachanWeb.CampaignWizard.AddSenderProfile do
             phx-target={@myself}
             phx-click={
               JS.push("add_sender_profile",
-                value: %{sender_profile_id: profile.id, campaign_id: @campaign_id}
+                value: %{sender_profile_id: profile.id, campaign_id: @campaign.id}
               )
             }
           >
@@ -60,7 +60,7 @@ defmodule VachanWeb.CampaignWizard.AddSenderProfile do
     {:noreply,
      socket
      |> put_flash(:info, "Selected sender profile associated")
-     |> push_patch(to: ~p"/wizard/#{socket.assigns.campaign_id}/review")}
+     |> push_patch(to: ~p"/wizard/#{socket.assigns.campaign.id}/review")}
   end
 
   @impl true
@@ -75,12 +75,14 @@ defmodule VachanWeb.CampaignWizard.AddSenderProfile do
 
     case AshPhoenix.Form.submit(form) do
       {:ok, content} ->
-        notify_parent({:created, content})
+        # notify_parent({:success, content})
 
-        {:noreply,
-         socket
-         |> put_flash(:info, "Content Saved")
-         |> push_patch(to: ~p"/wizard/#{socket.assigns.campaign_id}/add-recepients/")}
+        {
+          :noreply,
+          socket
+          |> put_flash(:info, "Content Saved")
+          |> push_patch(to: socket.assigns.next_f.(socket.assigns.campaign.id))
+        }
 
       {:error, form} ->
         IO.inspect(form)
