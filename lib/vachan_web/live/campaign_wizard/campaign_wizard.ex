@@ -53,6 +53,11 @@ defmodule VachanWeb.CampaignWizard.CampaignWizardLive do
         next: fn campaign_id -> "/wizard/#{campaign_id}/review/" end
       },
       %{
+        live_action: :create_sender_profile,
+        module: VachanWeb.CampaignWizard.AddSenderProfile,
+        next: fn campaign_id -> "/wizard/#{campaign_id}/add-sender-profile/" end
+      },
+      %{
         live_action: :review,
         module: VachanWeb.CampaignWizard.Review,
         next: fn campaign_id -> "/campaigns/#{campaign_id}/show/" end

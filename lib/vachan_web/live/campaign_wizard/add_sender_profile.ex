@@ -34,6 +34,23 @@ defmodule VachanWeb.CampaignWizard.AddSenderProfile do
           </.button>
         </:action>
       </.table>
+      <.modal
+        :if={@live_action in [:create_sender_profile]}
+        id="sender-profile-modal"
+        show
+        on_cancel={JS.patch(~p"/wizard/#{@campaign.id}/add-sender-profile")}
+      >
+        <.live_component
+          module={VachanWeb.SenderProfileLive.FormComponent}
+          id={:new}
+          title="Create Sender Profile"
+          action={:new}
+          sender_profile={nil}
+          current_user={@current_user}
+          current_org={@current_org}
+          patch={~p"/wizard/#{@campaign.id}/add-sender-profile"}
+        />
+      </.modal>
     </div>
     """
   end
