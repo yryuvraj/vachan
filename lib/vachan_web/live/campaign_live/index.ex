@@ -29,6 +29,7 @@ defmodule VachanWeb.CampaignLive.Index do
   defp search_campaign_name(query, socket) when is_binary(query) do
     {:ok, campaigns} = Campaign.read_all(ash_opts(socket))
     capitalized_query = String.capitalize(query)
+
     Enum.filter(campaigns, fn campaign ->
       String.contains?(String.capitalize(campaign.name), capitalized_query)
     end)

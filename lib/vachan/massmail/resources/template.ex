@@ -1,5 +1,5 @@
 defmodule Vachan.Massmail.Template do
-  use Ash.Resource, data_layer: AshPostgres.DataLayer
+  use Ash.Resource, domain: Vachan.Massmail, data_layer: AshPostgres.DataLayer
 
   resource do
     description "Templates are used to create messages for mass emails."
@@ -11,8 +11,6 @@ defmodule Vachan.Massmail.Template do
   end
 
   code_interface do
-    define_for Vachan.Massmail
-
     define :create, action: :create
     define :update, action: :update
     define :destroy, action: :destroy

@@ -100,7 +100,7 @@ defmodule VachanWeb.PersonLive.AddToList do
 
   defp get_list_ids_for_person(person, socket) do
     person
-    |> Vachan.Crm.load!(:lists, ash_opts(socket))
+    |> Ash.load!(:lists, ash_opts(socket))
     |> then(fn x -> x.lists end)
     |> Enum.map(fn x -> x.id end)
   end

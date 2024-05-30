@@ -1,5 +1,5 @@
 defmodule Vachan.Organizations do
-  use Ash.Api, otp_app: :vachan
+  use Ash.Domain, otp_app: :vachan
 
   resources do
     resource Vachan.Organizations.Team

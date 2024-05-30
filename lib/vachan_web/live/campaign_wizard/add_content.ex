@@ -78,7 +78,7 @@ defmodule VachanWeb.CampaignWizard.ContentStep do
     Vachan.Massmail.Content
     |> AshPhoenix.Form.for_create(
       :create,
-      ash_opts(assigns, api: Vachan.Massmail)
+      ash_opts(assigns, domain: Vachan.Massmail)
     )
     |> to_form()
   end

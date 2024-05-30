@@ -1,5 +1,5 @@
 defmodule Vachan.Massmail do
-  use Ash.Api
+  use Ash.Domain
 
   resources do
     resource Vachan.Massmail.Campaign

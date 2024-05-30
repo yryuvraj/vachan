@@ -1,5 +1,5 @@
 defmodule Vachan.Profiles do
-  use Ash.Api
+  use Ash.Domain
 
   resources do
     resource Vachan.Profiles.Profile

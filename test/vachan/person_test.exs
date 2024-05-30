@@ -59,12 +59,12 @@ defmodule Vachan.PersonTest do
   defp update_person(person, attrs, user, tenant) do
     person
     |> Ash.Changeset.for_update(:update, attrs, actor: user, tenant: tenant)
-    |> Crm.update()
+    |> Ash.update()
   end
 
   defp create_person(attrs, user) do
     Crm.Person
     |> Ash.Changeset.for_create(:create, attrs, actor: user)
-    |> Crm.create()
+    |> Ash.create()
   end
 end

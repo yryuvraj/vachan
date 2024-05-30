@@ -78,6 +78,6 @@ defmodule Vachan.AccountsTest do
   defp get_user(id) do
     Accounts.User
     |> Ash.Query.filter(id == ^id)
-    |> Accounts.read_one!()
+    |> Ash.read_one!()
   end
 end

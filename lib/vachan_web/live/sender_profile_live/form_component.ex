@@ -38,13 +38,13 @@ defmodule VachanWeb.SenderProfileLive.FormComponent do
 
   defp create_form(assigns) do
     SenderProfile
-    |> AshPhoenix.Form.for_create(:create, ash_opts(assigns, api: Vachan.SenderProfiles))
+    |> AshPhoenix.Form.for_create(:create, ash_opts(assigns, domain: Vachan.SenderProfiles))
     |> to_form()
   end
 
   defp update_form(assigns) do
     assigns.sender_profile
-    |> AshPhoenix.Form.for_update(:update, ash_opts(assigns, api: Vachan.SenderProfiles))
+    |> AshPhoenix.Form.for_update(:update, ash_opts(assigns, domain: Vachan.SenderProfiles))
     |> to_form()
   end
 

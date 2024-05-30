@@ -107,7 +107,7 @@ defmodule VachanWeb.CampaignWizard.AddRecepients do
     Vachan.Massmail.Recepients
     |> AshPhoenix.Form.for_create(
       :create,
-      ash_opts(assigns, api: Vachan.Massmail)
+      ash_opts(assigns, domain: Vachan.Massmail)
     )
     |> to_form()
   end

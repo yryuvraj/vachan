@@ -1,10 +1,11 @@
 defmodule Vachan.Accounts.Token do
   use Ash.Resource,
+    domain: Vachan.Accounts,
     data_layer: AshPostgres.DataLayer,
     extensions: [AshAuthentication.TokenResource]
 
   token do
-    api Vachan.Accounts
+    domain(Vachan.Accounts)
   end
 
   postgres do

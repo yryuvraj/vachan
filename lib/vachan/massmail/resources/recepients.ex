@@ -1,5 +1,5 @@
 defmodule Vachan.Massmail.Recepients do
-  use Ash.Resource, data_layer: AshPostgres.DataLayer
+  use Ash.Resource, domain: Vachan.Massmail, data_layer: AshPostgres.DataLayer
 
   resource do
     description "Recepients of a campaign go here."
@@ -16,8 +16,6 @@ defmodule Vachan.Massmail.Recepients do
   end
 
   code_interface do
-    define_for Vachan.Massmail
-
     define :create, action: :create
     define :destroy, action: :destroy
     define :read_all, action: :read
@@ -56,7 +54,7 @@ defmodule Vachan.Massmail.Recepients do
       attribute_type: :integer
 
     belongs_to :organization, Vachan.Organizations.Organization do
-      api Vachan.Organizations
+      domain(Vachan.Organizations)
     end
   end
 end

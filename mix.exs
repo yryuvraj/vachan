@@ -58,17 +58,18 @@ defmodule Vachan.MixProject do
       {:jason, "~> 1.2"},
       {:dns_cluster, "~> 0.1.1"},
       {:bandit, "~> 1.2"},
-      {:ash_phoenix, "~> 1.3"},
-      {:ash, "~> 2.18"},
-      {:ash_postgres, "~> 1.4"},
-      {:ash_authentication, "~> 3.12"},
-      {:ash_authentication_phoenix, "~> 1.9.4"},
+      {:ash_phoenix, "~> 2.0"},
+      {:ash, "~> 3.0"},
+      {:ash_postgres, "~> 2.0"},
+      {:ash_authentication, "~> 4.0.0"},
+      {:ash_authentication_phoenix, "~> 2.0"},
       {:oban, "~> 2.17"},
       {:oban_live_dashboard, "~> 0.1.0"},
       {:gen_smtp, "~> 1.2"},
       {:tls_certificate_check, "~> 1.22"},
       {:certifi, "~> 2.13"},
-      {:ash_state_machine, "~> 0.2.2"}
+      {:ash_state_machine, "~> 0.2.3"},
+      {:picosat_elixir, "~> 0.2"}
     ]
   end
 

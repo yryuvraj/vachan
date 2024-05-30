@@ -1,5 +1,5 @@
 defmodule Vachan.Crm do
-  use Ash.Api
+  use Ash.Domain
 
   resources do
     resource Vachan.Crm.Person

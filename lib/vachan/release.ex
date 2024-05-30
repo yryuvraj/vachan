@@ -74,7 +74,7 @@ defmodule Vachan.Release do
   end
 
   defp repos do
-    apis()
+    domains()
     |> Enum.flat_map(fn api ->
       api
       |> Ash.Api.Info.resources()
@@ -83,8 +83,8 @@ defmodule Vachan.Release do
     |> Enum.uniq()
   end
 
-  defp apis do
-    Application.fetch_env!(@app, :ash_apis)
+  defp domains do
+    Application.fetch_env!(@app, :ash_domains)
   end
 
   defp load_app do

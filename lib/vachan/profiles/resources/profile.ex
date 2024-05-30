@@ -6,6 +6,7 @@ defmodule Vachan.Profiles.Profile do
   alias Vachan.Accounts.User
 
   use Ash.Resource,
+    domain: Vachan.Profiles,
     data_layer: AshPostgres.DataLayer,
     authorizers: [Ash.Policy.Authorizer]
 
@@ -24,18 +25,21 @@ defmodule Vachan.Profiles.Profile do
   end
 
   actions do
-    defaults [:create, :read, :update]
+    defaults [:read, :update, :create]
+    default_accept :*
   end
 
   attributes do
     attribute :id, :uuid do
       primary_key? true
       allow_nil? false
+      public? true
     end
 
     attribute :name, :string do
       allow_nil? false
       constraints max_length: 64
+      public? true
     end
   end
 
@@ -46,7 +50,7 @@ defmodule Vachan.Profiles.Profile do
 
   relationships do
     belongs_to :owner, User do
-      api Vachan.Accounts
+      domain(Vachan.Accounts)
       source_attribute :id
       destination_attribute :id
     end

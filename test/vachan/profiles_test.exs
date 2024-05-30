@@ -68,12 +68,12 @@ defmodule Vachan.ProfilesTest do
   defp create_profile(attrs, user) do
     Profiles.Profile
     |> Ash.Changeset.for_create(:create, Map.put(attrs, "id", user.id), actor: user)
-    |> Profiles.create!()
+    |> Ash.create!()
   end
 
   defp update_profile(profile, attrs, user) do
     profile
     |> Ash.Changeset.for_update(:update, attrs, actor: user)
-    |> Profiles.update!()
+    |> Ash.update!()
   end
 end

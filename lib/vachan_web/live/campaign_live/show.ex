@@ -1,7 +1,6 @@
 defmodule VachanWeb.CampaignLive.Show do
   use VachanWeb, :live_view
 
-  alias Vachan.Massmail
   alias Vachan.Massmail.Campaign
 
   @impl true
@@ -34,7 +33,7 @@ defmodule VachanWeb.CampaignLive.Show do
     campaign =
       id
       |> Campaign.get_by_id!(ash_opts(socket))
-      |> Massmail.load!(:list, ash_opts(socket))
+      |> Ash.load!(:list, ash_opts(socket))
 
     {:ok,
      socket

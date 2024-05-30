@@ -1,5 +1,5 @@
 defmodule Vachan.Prelaunch do
-  use Ash.Api
+  use Ash.Domain
 
   resources do
     resource Vachan.Prelaunch.Subscriber

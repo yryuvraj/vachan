@@ -1,5 +1,6 @@
 defmodule Vachan.Organizations.Organization do
   use Ash.Resource,
+    domain: Vachan.Organizations,
     data_layer: AshPostgres.DataLayer,
     authorizers: [Ash.Policy.Authorizer]
 
@@ -11,11 +12,13 @@ defmodule Vachan.Organizations.Organization do
     policy action_type(:create) do
       authorize_if always()
     end
+
+    policy action_type(:read) do
+      authorize_if always()
+    end
   end
 
   code_interface do
-    define_for Vachan.Organizations
-
     define :create, action: :create
     define :update, action: :update
     define :destroy, action: :destroy
@@ -27,7 +30,12 @@ defmodule Vachan.Organizations.Organization do
   end
 
   actions do
-    defaults [:create, :read, :update, :destroy]
+    defaults [:read, :update, :destroy]
+
+    create :create do
+      accept [:name]
+      primary? true
+    end
 
     read :by_id do
       argument :id, :integer, allow_nil?: false
@@ -76,7 +84,7 @@ defmodule Vachan.Organizations.Organization do
 
     many_to_many :members, Vachan.Accounts.User do
       through Vachan.Organizations.Team
-      api Vachan.Accounts
+      domain(Vachan.Accounts)
       source_attribute_on_join_resource :organization_id
       destination_attribute_on_join_resource :member_id
     end

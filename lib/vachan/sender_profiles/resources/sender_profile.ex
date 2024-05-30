@@ -1,5 +1,5 @@
 defmodule Vachan.SenderProfiles.SenderProfile do
-  use Ash.Resource, data_layer: AshPostgres.DataLayer
+  use Ash.Resource, domain: Vachan.SenderProfiles, data_layer: AshPostgres.DataLayer
 
   resource do
     description "The place for users to store the configuration params for their email gateways."
@@ -16,8 +16,6 @@ defmodule Vachan.SenderProfiles.SenderProfile do
   end
 
   code_interface do
-    define_for Vachan.SenderProfiles
-
     define :create, action: :create
     define :update, action: :update
     define :destroy, action: :destroy
@@ -72,11 +70,11 @@ defmodule Vachan.SenderProfiles.SenderProfile do
 
   relationships do
     has_many :campaigns, Vachan.Massmail.Campaign do
-      api Vachan.Massmail
+      domain(Vachan.Massmail)
     end
 
     belongs_to :organization, Vachan.Organizations.Organization do
-      api Vachan.Organizations
+      domain(Vachan.Organizations)
     end
   end
 end

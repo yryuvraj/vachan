@@ -1,5 +1,5 @@
 defmodule Vachan.Massmail.Message do
-  use Ash.Resource, data_layer: AshPostgres.DataLayer
+  use Ash.Resource, domain: Vachan.Massmail, data_layer: AshPostgres.DataLayer
 
   resource do
     description "Message tracks the journey of an email through the system."
@@ -11,8 +11,6 @@ defmodule Vachan.Massmail.Message do
   end
 
   code_interface do
-    define_for Vachan.Massmail
-
     define :create, action: :create
     define :update, action: :update
     define :destroy, action: :destroy
@@ -60,7 +58,7 @@ defmodule Vachan.Massmail.Message do
     belongs_to :campaign, Vachan.Massmail.Campaign, attribute_type: :integer
 
     belongs_to :recepient, Vachan.Crm.Person do
-      api Vachan.Crm
+      domain(Vachan.Crm)
     end
   end
 end

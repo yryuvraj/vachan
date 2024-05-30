@@ -23,7 +23,7 @@ defmodule Vachan.AccountsFixtures do
     {:ok, confirmed_user} = confirm(user)
 
     confirmed_user
-    |> Vachan.Accounts.load!(:orgs)
+    |> Ash.load!(:orgs, actor: confirmed_user, authorize?: true)
   end
 
   def profiled_user(email \\ "test@test", _name \\ "Test Name") do

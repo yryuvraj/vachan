@@ -50,7 +50,7 @@ defmodule Vachan.ListTest do
     {:ok, list} =
       Crm.List
       |> Ash.Changeset.for_create(:create, attrs, actor: user)
-      |> Crm.create()
+      |> Ash.create()
 
     list
   end
@@ -58,6 +58,6 @@ defmodule Vachan.ListTest do
   defp update_list(list, attrs, user, tenant) do
     list
     |> Ash.Changeset.for_update(:update, attrs, actor: user, tenant: tenant)
-    |> Crm.update()
+    |> Ash.update()
   end
 end

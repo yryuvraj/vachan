@@ -1,5 +1,6 @@
 defmodule Vachan.Massmail.Campaign do
   use Ash.Resource,
+    domain: Vachan.Massmail,
     data_layer: AshPostgres.DataLayer,
     extensions: [AshStateMachine]
 
@@ -33,8 +34,6 @@ defmodule Vachan.Massmail.Campaign do
   end
 
   code_interface do
-    define_for Vachan.Massmail
-
     define :destroy, action: :destroy
     define :read_all, action: :read
     define :get_by_id, args: [:id], action: :by_id
@@ -112,15 +111,18 @@ defmodule Vachan.Massmail.Campaign do
     has_one :content, Vachan.Massmail.Content
     has_many :messages, Vachan.Massmail.Message
 
-    belongs_to :list, Vachan.Crm.List, api: Vachan.Crm, attribute_type: :integer, allow_nil?: true
+    belongs_to :list, Vachan.Crm.List,
+      domain: Vachan.Crm,
+      attribute_type: :integer,
+      allow_nil?: true
 
     belongs_to :organization, Vachan.Organizations.Organization do
-      api Vachan.Organizations
+      domain(Vachan.Organizations)
       allow_nil? true
     end
 
     belongs_to :sender_profile, Vachan.SenderProfiles.SenderProfile do
-      api Vachan.SenderProfiles
+      domain(Vachan.SenderProfiles)
     end
   end
 

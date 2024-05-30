@@ -1,5 +1,6 @@
 defmodule Vachan.Crm.PersonList do
   use Ash.Resource,
+    domain: Vachan.Crm,
     data_layer: AshPostgres.DataLayer,
     notifiers: [Ash.Notifier.PubSub]
 

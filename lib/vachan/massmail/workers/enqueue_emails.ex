@@ -9,9 +9,9 @@ defmodule Vachan.Massmail.Workers.EnqueueEmails do
   def perform(%Oban.Job{args: %{"campaign_id" => campaign_id} = _args}) do
     campaign =
       Massmail.Campaign.get_by_id!(campaign_id, actor: nil, authorize?: false)
-      |> Massmail.load!(:list, actor: nil, authorize?: false)
+      |> Ash.load!(:list, actor: nil, authorize?: false)
 
-    recepients = Crm.load!(campaign.list, :people, authorize?: false, actor: nil)
+    recepients = Ash.load!(campaign.list, :people, authorize?: false, actor: nil)
 
     recepients.people
     |> Enum.map(
@@ -49,7 +49,7 @@ defmodule Vachan.Massmail.Workers.HydrateEmails do
     subject = EEx.eval_string(campaign.subject, person: recepient)
 
     message =
-      Massmail.Message.create!(
+      Ash.create!(
         %{
           campaign_id: campaign.id,
           recepient_id: recepient.id,
@@ -83,10 +83,10 @@ defmodule Vachan.Massmail.Workers.SendEmails do
   def perform(%Oban.Job{args: %{"message_id" => message_id} = _args}) do
     message =
       Massmail.Message.get_by_id!(message_id, authorize?: false, actor: nil)
-      |> Massmail.load!(:campaign, authorize?: false, actor: nil)
-      |> Massmail.load!(:recepient, authorize?: false, actor: nil)
+      |> Ash.load!(:campaign, authorize?: false, actor: nil)
+      |> Ash.load!(:recepient, authorize?: false, actor: nil)
 
-    campaign = message.campaign |> Massmail.load!(:sender_profile, authorize?: false, actor: nil)
+    campaign = message.campaign |> Ash.load!(:sender_profile, authorize?: false, actor: nil)
     recepient = message.recepient
     sender_profile = campaign.sender_profile
 
@@ -107,10 +107,10 @@ defmodule Vachan.Massmail.Workers.SendEmails do
 
     case Swoosh.Adapters.SMTP.deliver(email, config) do
       {:ok, _} ->
-        Massmail.Message.update!(message, %{status: :sent}, actor: nil, authorize?: false)
+        Ash.update!(message, %{status: :sent}, actor: nil, authorize?: false)
 
       {:error, _} ->
-        Massmail.Message.update!(message, %{status: :failed}, actor: nil, authorize?: false)
+        Ash.update!(message, %{status: :failed}, actor: nil, authorize?: false)
     end
   end
 end

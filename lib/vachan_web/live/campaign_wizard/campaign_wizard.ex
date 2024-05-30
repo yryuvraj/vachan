@@ -26,7 +26,7 @@ defmodule VachanWeb.CampaignWizard.CampaignWizardLive do
   end
 
   @impl true
-  def handle_info({_sender, {:message, object}}, socket) do
+  def handle_info({_sender, {_message, _object}}, socket) do
     {:noreply, socket}
   end
 
@@ -84,8 +84,8 @@ defmodule VachanWeb.CampaignWizard.CampaignWizardLive do
 
   defp get_campaign(socket, campaign_id) do
     Vachan.Massmail.Campaign.get_by_id!(campaign_id, ash_opts(socket))
-    |> Vachan.Massmail.load!(:sender_profile, ash_opts(socket))
-    |> Vachan.Massmail.load!(:content, ash_opts(socket))
-    |> Vachan.Massmail.load!(:recepients, ash_opts(socket))
+    |> Ash.load!(:sender_profile, ash_opts(socket))
+    |> Ash.load!(:content, ash_opts(socket))
+    |> Ash.load!(:recepients, ash_opts(socket))
   end
 end

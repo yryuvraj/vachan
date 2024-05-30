@@ -69,7 +69,7 @@ defmodule VachanWeb.CampaignWizard.NewCampaign do
 
   defp create_form(assigns) do
     Campaign
-    |> AshPhoenix.Form.for_create(:create, ash_opts(assigns, api: Vachan.Massmail))
+    |> AshPhoenix.Form.for_create(:create, ash_opts(assigns, domain: Vachan.Massmail))
     |> to_form()
   end
 

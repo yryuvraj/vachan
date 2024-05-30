@@ -1,5 +1,6 @@
 defmodule Vachan.Crm.List do
   use Ash.Resource,
+    domain: Vachan.Crm,
     data_layer: AshPostgres.DataLayer,
     notifiers: [Ash.Notifier.PubSub]
 
@@ -28,8 +29,6 @@ defmodule Vachan.Crm.List do
   end
 
   code_interface do
-    define_for Vachan.Crm
-
     define :create, action: :create
     define :update, action: :update
     define :destroy, action: :destroy
@@ -41,6 +40,7 @@ defmodule Vachan.Crm.List do
 
   actions do
     defaults [:create, :read, :update, :destroy]
+    default_accept :*
 
     update :add_person do
       argument :person_id, :uuid, allow_nil?: false
@@ -63,7 +63,7 @@ defmodule Vachan.Crm.List do
 
   attributes do
     integer_primary_key :id
-    attribute :name, :string, allow_nil?: false
+    attribute :name, :string, allow_nil?: false, public?: true
 
     create_timestamp :created_at
     update_timestamp :updated_at
@@ -77,7 +77,7 @@ defmodule Vachan.Crm.List do
     end
 
     belongs_to :organization, Vachan.Organizations.Organization do
-      api Vachan.Organizations
+      domain(Vachan.Organizations)
     end
   end
 

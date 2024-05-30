@@ -1,5 +1,6 @@
 defmodule Vachan.Prelaunch.Subscriber do
   use Ash.Resource,
+    domain: Vachan.Prelaunch,
     data_layer: AshPostgres.DataLayer,
     notifiers: [Ash.Notifier.PubSub]
 
@@ -23,8 +24,6 @@ defmodule Vachan.Prelaunch.Subscriber do
   end
 
   code_interface do
-    define_for Vachan.Prelaunch
-
     define :create, action: :create
     define :update, action: :update
     define :destroy, action: :destroy

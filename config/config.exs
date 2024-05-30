@@ -8,7 +8,7 @@
 import Config
 
 config :vachan,
-  ash_apis: [
+  ash_domains: [
     Vachan.Accounts,
     Vachan.Crm,
     Vachan.Massmail,

@@ -1,11 +1,12 @@
 defmodule Vachan.Accounts.User do
   use Ash.Resource,
+    domain: Vachan.Accounts,
     data_layer: AshPostgres.DataLayer,
     extensions: [AshAuthentication]
 
   attributes do
     uuid_primary_key :id
-    attribute :email, :ci_string, allow_nil?: false
+    attribute :email, :ci_string, allow_nil?: false, public?: true
     attribute :hashed_password, :string, allow_nil?: false, sensitive?: true
   end
 
@@ -14,7 +15,7 @@ defmodule Vachan.Accounts.User do
   end
 
   changes do
-    change after_action(fn changeset, result ->
+    change after_action(fn changeset, result, context ->
              organization =
                Vachan.Organizations.Organization
                |> Ash.Changeset.for_create(
@@ -24,7 +25,7 @@ defmodule Vachan.Accounts.User do
                  },
                  actor: result
                )
-               |> Vachan.Organizations.create!(authorize?: true)
+               |> Ash.create!(authorize?: true)
 
              Vachan.Organizations.Team
              |> Ash.Changeset.for_create(
@@ -38,7 +39,7 @@ defmodule Vachan.Accounts.User do
                organization,
                type: :append
              )
-             |> Vachan.Organizations.create!(authorize?: true)
+             |> Ash.create!(authorize?: true)
 
              {:ok, result}
            end),
@@ -47,7 +48,7 @@ defmodule Vachan.Accounts.User do
   end
 
   authentication do
-    api Vachan.Accounts
+    domain(Vachan.Accounts)
 
     add_ons do
       confirmation :confirm do
@@ -93,19 +94,19 @@ defmodule Vachan.Accounts.User do
   relationships do
     many_to_many :orgs, Vachan.Organizations.Organization do
       through Vachan.Organizations.Team
-      api Vachan.Organizations
+      domain(Vachan.Organizations)
       source_attribute_on_join_resource :member_id
       destination_attribute_on_join_resource :organization_id
     end
 
     has_many :orgs_join_assoc, Vachan.Organizations.Team do
-      api Vachan.Organizations
+      domain(Vachan.Organizations)
       source_attribute :id
       destination_attribute :member_id
     end
 
     has_one :profile, Vachan.Profiles.Profile do
-      api Vachan.Profiles
+      domain(Vachan.Profiles)
       source_attribute :id
       destination_attribute :id
     end

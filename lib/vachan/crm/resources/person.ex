@@ -1,5 +1,6 @@
 defmodule Vachan.Crm.Person do
   use Ash.Resource,
+    domain: Vachan.Crm,
     data_layer: AshPostgres.DataLayer,
     notifiers: [Ash.Notifier.PubSub]
 
@@ -28,8 +29,6 @@ defmodule Vachan.Crm.Person do
   end
 
   code_interface do
-    define_for Vachan.Crm
-
     define :create, action: :create
     define :update, action: :update
     define :destroy, action: :destroy
@@ -39,6 +38,7 @@ defmodule Vachan.Crm.Person do
 
   actions do
     defaults [:read, :create, :update, :destroy]
+    default_accept :*
 
     read :by_id do
       argument :id, :uuid, allow_nil?: false
@@ -50,42 +50,50 @@ defmodule Vachan.Crm.Person do
   attributes do
     uuid_primary_key :id
 
-    attribute :first_name, :string, allow_nil?: false
-    attribute :last_name, :string, allow_nil?: false
+    attribute :first_name, :string, allow_nil?: false, public?: true
+    attribute :last_name, :string, allow_nil?: false, public?: true
 
     attribute :email, :ci_string do
       allow_nil? false
+      public? true
 
       constraints match: ~r/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
     end
 
     attribute :phone, :string do
       allow_nil? true
+      public? true
     end
 
     attribute :city, :string do
       allow_nil? true
+      public? true
     end
 
     attribute :state, :string do
       allow_nil? true
+      public? true
     end
 
     attribute :country, :string do
       allow_nil? true
+      public? true
     end
 
     attribute :designation, :string do
       allow_nil? true
+      public? true
     end
 
     attribute :company, :string do
       allow_nil? true
+      public? true
     end
 
     # TODO: make this a jsonb field, validated against a list of tags in a separate table.
     attribute :tags, :string do
       allow_nil? true
+      public? true
     end
 
     create_timestamp :created_at
@@ -104,7 +112,7 @@ defmodule Vachan.Crm.Person do
     end
 
     belongs_to :organization, Vachan.Organizations.Organization do
-      api Vachan.Organizations
+      domain(Vachan.Organizations)
     end
   end
 end

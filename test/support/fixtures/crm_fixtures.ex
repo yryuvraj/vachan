@@ -20,7 +20,7 @@ defmodule Vachan.CrmFixtures do
     {:ok, person} =
       Vachan.Crm.Person
       |> Ash.Changeset.for_create(:create, person_attrs)
-      |> Vachan.Crm.create()
+      |> Ash.create()
 
     person
   end
@@ -38,7 +38,7 @@ defmodule Vachan.CrmFixtures do
     {:ok, list} =
       Vachan.Crm.List
       |> Ash.Changeset.for_create(:create, list_attrs)
-      |> Vachan.Crm.create()
+      |> Ash.create()
 
     list
   end

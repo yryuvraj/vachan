@@ -73,7 +73,7 @@ defmodule VachanWeb.ProfileLive.Profile do
   end
 
   defp init_form(socket, user) do
-    case Profiles.get(Profiles.Profile, user.id, actor: user) do
+    case Ash.get(Profiles.Profile, user.id, actor: user) do
       {:ok, profile} ->
         assign(socket,
           form:

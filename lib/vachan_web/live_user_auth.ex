@@ -49,7 +49,7 @@ defmodule VachanWeb.LiveUserAuth do
       user = socket.assigns[:current_user]
 
       if user.confirmed_at != nil do
-        case Profiles.get(Profiles.Profile, socket.assigns[:current_user].id, actor: user) do
+        case Ash.get(Profiles.Profile, socket.assigns[:current_user].id, actor: user) do
           {:ok, _} ->
             {:ok, org} =
               Vachan.Organizations.Organization.get_personal_org_for_user(

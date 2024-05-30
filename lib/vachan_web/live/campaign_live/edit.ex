@@ -41,13 +41,13 @@ defmodule VachanWeb.CampaignLive.Edit do
 
   defp create_form(socket) do
     Campaign
-    |> AshPhoenix.Form.for_create(:create, ash_opts(socket, api: Vachan.Massmail))
+    |> AshPhoenix.Form.for_create(:create, ash_opts(socket, domain: Vachan.Massmail))
     |> to_form()
   end
 
   defp update_form(socket, campaign) do
     campaign
-    |> AshPhoenix.Form.for_update(:update, ash_opts(socket, api: Vachan.Massmail))
+    |> AshPhoenix.Form.for_update(:update, ash_opts(socket, domain: Vachan.Massmail))
     |> to_form()
   end
 
