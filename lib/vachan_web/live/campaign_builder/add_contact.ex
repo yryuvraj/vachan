@@ -1,6 +1,22 @@
 defmodule VachanWeb.CampaignBuilder.AddContact do
   use VachanWeb, :live_component
 
+  defmodule Contact do
+    use Ecto.Schema
+    import Ecto.Changeset
+
+    schema "contacts" do
+      field :list_name, :string
+      field :contacts_csv, :string
+    end
+
+    def changeset(contact, params \\ %{}) do
+      contact
+      |> cast(params, [:list_name, :contacts_csv])
+      |> validate_required([:list_name, :contacts_csv])
+    end
+  end
+
   @impl true
   def render(assigns) do
     ~H"""
@@ -32,46 +48,60 @@ defmodule VachanWeb.CampaignBuilder.AddContact do
   end
 
   def get_changeset(params) do
-    data = %{}
-    types = %{list_name: :string, contacts_csv: :string}
-
-    {data, types}
-    |> Ecto.Changeset.cast(params, Map.keys(types))
-  end
-
-  defp validate(params) do
-    data = %{}
-    types = %{list_name: :string, contacts_csv: :string}
-
-    {data, types}
-    |> Ecto.Changeset.cast(params, Map.keys(types))
-    |> Ecto.Changeset.validate_required(:list_name, :contacts_csv)
+    Contact.changeset(%Contact{}, params)
   end
 
   @impl true
   def update(_assigns, socket) do
+    changeset = get_changeset(%{})
     {:ok,
      socket
-     |> assign(:form, to_form(get_changeset(%{}), as: "contact"))
+     |> assign(:form, to_form(changeset, as: "contact"))
      |> assign(:column_names, [])}
   end
 
   @impl true
-  def handle_event("validate", params, socket) do
-    form = validate(params)
-    [headers | parsed_data] = csv_to_array(params["blob"])
+  def handle_event("validate", %{"contact" => params}, socket) do
+    form = get_changeset(params)
 
-    {:noreply,
-     socket
-     |> assign(:form, to_form(form))
-     |> assign(:parsed_data, parsed_data)
-     |> assign(:headers, headers)}
+    case params["contacts_csv"] do
+      nil ->
+        {:noreply,
+         socket
+         |> assign(:form, to_form(form, as: "contact"))
+         |> assign(:parsed_data, [])
+         |> assign(:headers, [])}
+      csv_data ->
+        [headers | parsed_data] = csv_to_array(csv_data)
+
+        {:noreply,
+         socket
+         |> assign(:form, to_form(form, as: "contact"))
+         |> assign(:parsed_data, parsed_data)
+         |> assign(:headers, headers)}
+    end
   end
 
   @impl true
-  def handle_event("save", params, socket) do
-    {:noreply, socket}
+  def handle_event("save", %{"contact" => params}, socket) do
+    form = get_changeset(params)
+
+    if form.valid? do
+      # Save to the database or perform your save logic here
+      # Example: Vachan.Repo.insert!(form)
+      {:noreply,
+       socket
+       |> put_flash(:info, "List saved successfully.")
+       |> assign(:form, to_form(form, as: "contact"))}
+    else
+      {:noreply,
+       socket
+       |> put_flash(:error, "Error saving the list.")
+       |> assign(:form, to_form(form, as: "contact"))}
+    end
   end
+
+  defp csv_to_array(nil), do: []
 
   defp csv_to_array(blob) do
     blob
