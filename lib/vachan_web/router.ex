@@ -25,6 +25,7 @@ defmodule VachanWeb.Router do
 
     live "/", PrelaunchLive.Homepage
     live "/verify-email", VerifyEmailLive
+
     # Leave out `register_path` and `reset_path` if you don't want to support
     # user registration and/or password resets respectively.
     # sign_in_route(register_path: "/register", reset_path: "/reset")
@@ -61,13 +62,25 @@ defmodule VachanWeb.Router do
       live "/lists/:id/edit", ListLive.Index, :edit
 
       live "/lists/:id", ListLive.Show, :show
-      live "/lists/:id/show/edit", ListLive.Show, :edit
+      live "/lists/:id/show/add-user", ListLive.Show, :edit
 
       live "/campaigns", CampaignLive.Index, :index
       live "/campaigns/new", CampaignLive.Edit, :new
       live "/campaigns/:id/edit", CampaignLive.Edit, :edit
       live "/campaigns/:id/", CampaignLive.Show, :show
       live "/campaigns/:id/builder", CampaignBuilderLive, :build
+      live "/campaigns/:id/preview", PreviewSendLive.Show, :show
+
+
+
+
+
+
+
+
+
+
+
 
       live "/sender-profiles", SenderProfileLive.Index, :index
       live "/sender-profiles/new", SenderProfileLive.Index, :new
@@ -88,6 +101,8 @@ defmodule VachanWeb.Router do
       live "/wizard/:id/add-sender-profile/create",
            CampaignWizard.CampaignWizardLive,
            :create_sender_profile
+
+
     end
   end
 

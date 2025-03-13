@@ -41,26 +41,31 @@ defmodule VachanWeb.CampaignBuilder.ContentComponent do
         </div>
 
         <div>
-          <h1>extracted variables:</h1>
           <%= for variable <- @column_names do %>
             <%= variable %>
           <% end %>
         </div>
       <% else %>
-        <.list>
-          <:item title="Subject"><%= @content.subject %></:item>
-          <:item title="Variables">
-            <span>
-              <%= Enum.join(@column_names, ", ") %>
-            </span>
-          </:item>
-          <:item title="Body">
-            <%= for line <- String.split(@content.text_body, "\n") do %>
-              <p class="break-normal"><%= line %></p>
-            <% end %>
-          </:item>
-        </.list>
-        <.button phx-click="edit-mode" phx-target={@myself}>Edit</.button>
+        <div class="bg-white rounded-lg p-4 max-w-md mb-2 mt-4">
+          <div class="grid grid-cols-2 gap-4">
+            <div class="font-semibold">Subject</div>
+            <div><%= @content.subject %></div>
+
+            <div class="font-semibold">Variables</div>
+            <div>
+              <span><%= Enum.join(@column_names, ", ") %></span>
+            </div>
+
+            <div class="font-semibold">Body</div>
+            <div>
+              <%= for line <- String.split(@content.text_body, "\n") do %>
+                <p class="break-normal"><%= line %></p>
+              <% end %>
+            </div>
+          </div>
+        </div>
+
+        <.button class="mt-4" phx-click="edit-mode" phx-target={@myself}>Edit</.button>
       <% end %>
     </div>
     """
